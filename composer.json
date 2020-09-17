@@ -1,0 +1,29 @@
+{
+    "name": "KMLlaravel/api-generator",
+    "description": "this is package allow us to ease initialize api folders",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Karam mustafa",
+            "email": "karam2mustafa@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload" : {
+        "psr-4": {
+            "KMLaravel\\ApiGenerator\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4" : {
+            "KMLaravel\\ApiGenerator\\Test\\" : "Tests/"
+        }
+    },
+    "extra" : {
+      "laravel" : {
+          "providers" : [
+              "KMLaravel\\ApiGenerator\\Providers\\ApisGeneratorServiceProviders"
+          ]
+      }
+    }
+}
