@@ -1,0 +1,11 @@
+<?php
+
+namespace App[apiPath];
+
+use Illuminate\Database\Eloquent\Model;
+
+class apiName extends Model
+{
+    protected $guarded = [];
+}
+

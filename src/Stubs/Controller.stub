@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Http\Controllers\apiPath;
+
+use App[modelPath];
+use App\Http\Controllers\BaseController;
+use App\Http\Requests[requestPath];
+use App\Http\Resources[resourcePath];
+
+
+class apiNameController extends BaseController
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $data = apiNameResource::collection(apiName::orderBy('created_at', 'desc')->get());
+        return $this->getResponse($data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(apiNameRequest $request)
+    {
+        $data = $request->validated();
+        $final =apiName::create($data);
+        return $this->getResponse($final, 'add success', 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+
+        return $this->ShowCustomElement(apiName::class, $id, apiNameResource::class, $this->showMessage);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(apiNameRequest $request, $id)
+    {
+        return $this->UpdateCustomElement(apiName::class, $id, $request, $this->updateMessage);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        return $this->DeleteCustomElement(apiName::class, $id, $this->deleteMessage);
+    }
+}
