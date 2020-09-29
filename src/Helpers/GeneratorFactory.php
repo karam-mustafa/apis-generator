@@ -13,27 +13,27 @@ class GeneratorFactory
      * @var
      */
     private $request;
+    /**
+     * @var
+     */
     private $checkIfBaseControllerExists;
     private $baseControllerPath = "Http/Controllers/BaseController.php";
     private $buildOption;
     private $apiTitle;
     private $column;
+    private $modelPath;
+    private $requestPath;
+    private $resourcePath;
 
     public function __construct($request)
     {
         $this->request = $request;
-        $this->apiTitle = ucfirst($this->request->title);
-        foreach ($this->request->column as $name => $col) {
-            $newName = str_replace(" ", "_", $name);
-            $this->column[$newName] = $col;
-        }
-        return $this;
     }
 
     /**
      * @return GeneratorFactory
      */
-    public function setBuildOption(): GeneratorFactory
+    protected function setBuildOption(): GeneratorFactory
     {
         $buildOptionWithPrefix = [];
         foreach ($this->request->options as $item => $status) {
@@ -46,44 +46,26 @@ class GeneratorFactory
     /**
      * @return GeneratorFactory
      */
-    public function setCheckIfBaseControllerExists(): GeneratorFactory
+    protected function setCheckIfBaseControllerExists(): GeneratorFactory
     {
         $this->checkIfBaseControllerExists = File::exists(app_path($this->baseControllerPath));
-        return $this;
-    }
-    public function checkValidate()
-    {
-        $validatedData = [
-            "title" => "required|string",
-            "options" => "required",
-            "column" => "required",
-        ];
-        if (isset($this->request->column)) {
-            foreach ($this->request->column as $column) {
-                foreach ($column as $name => $item) {
-                    if (!isset($item['type'])) {
-                        $validatedData['type'] = "type for column $name is required";
-                    }
-                }
-            }
-        }
-        $this->request->validate($validatedData);
         return $this;
     }
 
     /**
      * @return bool
      */
-    public function buildOption()
+    protected function buildOption()
     {
         return $this->request->options !== null;
     }
 
     /**
-     *
+     * @param $request
      */
-    public function generateApi()
+    public function generateApi($request)
     {
+        $this->checkValidation($request)->setBuildOption()->setCheckIfBaseControllerExists();
         foreach ($this->buildOption as $item) {
             if (method_exists(__CLASS__, $item)) {
                 $this->$item();
@@ -97,10 +79,10 @@ class GeneratorFactory
     protected function buildMigrations()
     {
         $builder = new KMModelAndMigrationHelper();
-        $builder->initialFiles("$this->apiTitle")
+        $modelPath = $builder->initialResource("$this->apiTitle", "buildColumnInModelWithMigration")
             ->callArtisan('-m')
-            ->updatePaths()
             ->build($this->column);
+        $this->modelPath = $modelPath;
     }
 
     /**
@@ -122,10 +104,15 @@ class GeneratorFactory
     protected function buildRequests()
     {
         $builder = new KMRequestBuilder();
-        $builder->initialFiles("$this->apiTitle" . "Request")
+        $requestPath = $builder->initialResource("$this->apiTitle" . "Request", "replaceRulesWithRulesOptions")
             ->callArtisan()
-            ->updatePaths()
             ->build($this->column);
+        return $this->requestPath = $requestPath;
+    }
+
+    protected function buildController()
+    {
+
     }
 
     /**
@@ -134,5 +121,17 @@ class GeneratorFactory
     protected function buildResource()
     {
         Artisan::call("make:resource " . "$this->apiTitle" . "Resource");
+        return $this->resourcePath = KMFileHelper::getResourceFile("$this->apiTitle" . "Resource.php");
+    }
+
+    protected function checkValidation($request)
+    {
+        $request->validated();
+        $this->apiTitle = ucfirst($this->request->title);
+        foreach ($this->request->column as $name => $col) {
+            $newName = str_replace(" ", "_", $name);
+            $this->column[$newName] = $col;
+        }
+        return $this;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace KMLaravel\ApiGenerator\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use KMLaravel\ApiGenerator\Helpers\GeneratorFactory;
+use KMLaravel\ApiGenerator\Requests\ApisGeneratorRequest;
 
 class apisGeneratorController extends Controller
 {
@@ -15,13 +15,9 @@ class apisGeneratorController extends Controller
         $this->generatorFactory = new GeneratorFactory(request());
     }
 
-    public function create()
+    public function create(ApisGeneratorRequest $request)
     {
-        $this->generatorFactory
-            ->checkValidate()
-            ->setBuildOption()
-            ->setCheckIfBaseControllerExists()
-            ->generateApi();
+        $this->generatorFactory->generateApi($request);
         session()->flash('alert_type' , 'success');
         session()->flash('success' , 'create new api successfully');
         return redirect()->route('apisGenerator.index');
