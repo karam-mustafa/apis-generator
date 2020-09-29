@@ -1,13 +1,18 @@
 <?php
 
 return [
-    'buildOptions' => [
-        "Requests" => 'buildRequests',
-        "Resource" => 'buildResource',
-        "BaseController" => 'buildBaseController',
-        "Migrations" => 'buildMigrations'
+    'build_options' => [
+        "Build requests" => 'buildRequests',
+        "Build resource" => 'buildResource',
+        "Build base controller if not exists" => 'buildBaseController',
+        "Build migrations" => 'buildMigrations',
+        "Build controller" => 'buildController',
     ],
-    'columnType' => [
+    "extra_build_options" => [
+        //
+    ],
+    "request_auth" => false,
+    'column_type' => [
         "string",
         "text",
         "boolean",
