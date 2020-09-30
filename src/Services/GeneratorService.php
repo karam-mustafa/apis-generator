@@ -1,13 +1,17 @@
 <?php
 
-namespace KMLaravel\ApiGenerator\Helpers;
+namespace KMLaravel\ApiGenerator\Services;
 
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use KMLaravel\ApiGenerator\BuildClasses\KMControllerBuilder;
+use KMLaravel\ApiGenerator\BuildClasses\KMModelAndMigrationBuilder;
+use KMLaravel\ApiGenerator\BuildClasses\KMRequestBuilder;
 use KMLaravel\ApiGenerator\Facade\KMFileHelper;
+use KMLaravel\ApiGenerator\Requests\ApisGeneratorRequest;
 
-class GeneratorFactory
+class GeneratorService
 {
     /**
      * @var
@@ -25,16 +29,11 @@ class GeneratorFactory
     private $requestPath;
     private $resourcePath;
 
-    public function __construct($request)
+    public function initialRequest($request): GeneratorService
     {
         $this->request = $request;
-    }
-
-    /**
-     * @return GeneratorFactory
-     */
-    protected function setBuildOption(): GeneratorFactory
-    {
+        $this->column = $request->column;
+        $this->apiTitle = $request->title;
         $buildOptionWithPrefix = [];
         foreach ($this->request->options as $item => $status) {
             $buildOptionWithPrefix[] = $item;
@@ -42,35 +41,26 @@ class GeneratorFactory
         $this->buildOption = $buildOptionWithPrefix;
         return $this;
     }
-
     /**
-     * @return GeneratorFactory
+     * @return GeneratorService
      */
-    protected function setCheckIfBaseControllerExists(): GeneratorFactory
+    protected function setCheckIfBaseControllerExists(): GeneratorService
     {
         $this->checkIfBaseControllerExists = File::exists(app_path($this->baseControllerPath));
         return $this;
     }
 
     /**
-     * @return bool
      */
-    protected function buildOption()
+    public function generateApi()
     {
-        return $this->request->options !== null;
-    }
-
-    /**
-     * @param $request
-     */
-    public function generateApi($request)
-    {
-        $this->checkValidation($request)->setBuildOption()->setCheckIfBaseControllerExists();
+        $this->setCheckIfBaseControllerExists();
         foreach ($this->buildOption as $item) {
             if (method_exists(__CLASS__, $item)) {
                 $this->$item();
             }
         }
+        $this->buildController();
     }
 
     /**
@@ -78,8 +68,8 @@ class GeneratorFactory
      */
     protected function buildMigrations()
     {
-        $builder = new KMModelAndMigrationHelper();
-        $modelPath = $builder->initialResource("$this->apiTitle", "buildColumnInModelWithMigration")
+        $builder = new KMModelAndMigrationBuilder();
+        $modelPath = $builder->initialResource("$this->apiTitle", "modelAndMigrationReplacer")
             ->callArtisan('-m')
             ->build($this->column);
         $this->modelPath = $modelPath;
@@ -104,7 +94,7 @@ class GeneratorFactory
     protected function buildRequests()
     {
         $builder = new KMRequestBuilder();
-        $requestPath = $builder->initialResource("$this->apiTitle" . "Request", "replaceRulesWithRulesOptions")
+        $requestPath = $builder->initialResource("$this->apiTitle" . "Request", "requestReplacer")
             ->callArtisan()
             ->build($this->column);
         return $this->requestPath = $requestPath;
@@ -112,7 +102,15 @@ class GeneratorFactory
 
     protected function buildController()
     {
-
+        $builder = new KMControllerBuilder();
+        $builder->initialResource("$this->apiTitle" . "Controller", "controllerReplacer")
+            ->callArtisan()
+            ->build($this->column,
+                [
+                    "model_path" => $this->modelPath ,
+                    "resource_path" => $this->resourcePath ,
+                    "request_path" => $this->requestPath
+                ]);
     }
 
     /**
@@ -122,16 +120,5 @@ class GeneratorFactory
     {
         Artisan::call("make:resource " . "$this->apiTitle" . "Resource");
         return $this->resourcePath = KMFileHelper::getResourceFile("$this->apiTitle" . "Resource.php");
-    }
-
-    protected function checkValidation($request)
-    {
-        $request->validated();
-        $this->apiTitle = ucfirst($this->request->title);
-        foreach ($this->request->column as $name => $col) {
-            $newName = str_replace(" ", "_", $name);
-            $this->column[$newName] = $col;
-        }
-        return $this;
     }
 }

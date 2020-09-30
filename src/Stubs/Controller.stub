@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\apiPath;
+namespace App\Http\Controllers\{{ controller_name }};
 
-use App[modelPath];
+use {{ model_path }};
 use App\Http\Controllers\BaseController;
-use App\Http\Requests[requestPath];
-use App\Http\Resources[resourcePath];
+use {{ request_path }};
+use {{ resource_path }};
 
 
-class apiNameController extends BaseController
+class {{ controller_name }} extends BaseController
 {
 
     public function __construct()
@@ -22,7 +22,7 @@ class apiNameController extends BaseController
      */
     public function index()
     {
-        $data = apiNameResource::collection(apiName::orderBy('created_at', 'desc')->get());
+        $data = {{ resource_class }}::collection({{ model_class }}::orderBy('created_at', 'desc')->get());
         return $this->getResponse($data);
     }
 
@@ -32,11 +32,11 @@ class apiNameController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(apiNameRequest $request)
+    public function store({{ request_class }} $request)
     {
-        $data = $request->validated();
-        $final =apiName::create($data);
-        return $this->getResponse($final, 'add success', 200);
+        $validated_data = $request->validated();
+        $data ={{ resource_class }}::create($validated_data);
+        return $this->getResponse($data, 'add success', 200);
     }
 
     /**
@@ -48,7 +48,7 @@ class apiNameController extends BaseController
     public function show($id)
     {
 
-        return $this->ShowCustomElement(apiName::class, $id, apiNameResource::class, $this->showMessage);
+        return $this->ShowCustomElement({{ model_class }}::class, $id, {{ resource_class }}::class, $this->showMessage);
     }
 
     /**
@@ -58,9 +58,9 @@ class apiNameController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(apiNameRequest $request, $id)
+    public function update({{ request_class }} $request, $id)
     {
-        return $this->UpdateCustomElement(apiName::class, $id, $request, $this->updateMessage);
+        return $this->UpdateCustomElement({{ model_class }}::class, $id, $request, $this->updateMessage);
     }
 
     /**
@@ -71,6 +71,6 @@ class apiNameController extends BaseController
      */
     public function destroy($id)
     {
-        return $this->DeleteCustomElement(apiName::class, $id, $this->deleteMessage);
+        return $this->DeleteCustomElement({{ model_class }}::class, $id, $this->deleteMessage);
     }
 }

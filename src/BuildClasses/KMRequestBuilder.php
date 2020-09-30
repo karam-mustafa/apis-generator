@@ -1,11 +1,11 @@
 <?php
 
 
-namespace KMLaravel\ApiGenerator\Helpers;
-use Illuminate\Support\Facades\Artisan;
-use KMLaravel\ApiGenerator\Facade\KMFileHelper;
+namespace KMLaravel\ApiGenerator\BuildClasses;
 
-class KMRequestBuilder extends BaseBuilder
+use Illuminate\Support\Facades\Artisan;
+
+class KMRequestBuilder extends KMBaseBuilder
 {
     protected $typeToMake = "Request";
 

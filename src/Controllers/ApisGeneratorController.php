@@ -3,7 +3,7 @@
 namespace KMLaravel\ApiGenerator\Controllers;
 
 use App\Http\Controllers\Controller;
-use KMLaravel\ApiGenerator\Helpers\GeneratorFactory;
+use KMLaravel\ApiGenerator\Services\GeneratorService;
 use KMLaravel\ApiGenerator\Requests\ApisGeneratorRequest;
 
 class apisGeneratorController extends Controller
@@ -12,12 +12,12 @@ class apisGeneratorController extends Controller
 
     public function __construct()
     {
-        $this->generatorFactory = new GeneratorFactory(request());
+        $this->generatorFactory = new GeneratorService();
     }
 
     public function create(ApisGeneratorRequest $request)
     {
-        $this->generatorFactory->generateApi($request);
+        $this->generatorFactory->initialRequest($request)->generateApi();
         session()->flash('alert_type' , 'success');
         session()->flash('success' , 'create new api successfully');
         return redirect()->route('apisGenerator.index');

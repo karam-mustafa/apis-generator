@@ -1,24 +1,31 @@
 <?php
 
 
-namespace KMLaravel\ApiGenerator\Helpers;
+namespace KMLaravel\ApiGenerator\BuildClasses;
 
 
 use Illuminate\Support\Facades\File;
+use KMLaravel\ApiGenerator\Helpers\KMFileHelper;
+use ReflectionClass;
+use ReflectionException;
 
-class BaseBuilder
+class KMBaseBuilder
 {
-    protected  $fileName;
-    protected  $filepath;
-    protected  $fileToCreate;
+    protected $fileName;
+    protected $filepath;
+    protected $fileToCreate;
     protected $functionToBuild;
+    protected $helperFileToGet = [
+        "requestReplacer" => ["getRequestFile" , "getRequestFileAsStream"],
+        "modelAndMigrationReplacer" => ["getModelFile" , "getModelFileAsStream"],
+    ];
 
     /**
      * @param $fileName
      * @param $functionToBuild
      * @return $this
      */
-    public function initialResource($fileName  , $functionToBuild): BaseBuilder
+    public function initialResource($fileName, $functionToBuild): KMBaseBuilder
     {
         $this->functionToBuild = $functionToBuild;
         $this->fileName = $fileName;
@@ -27,24 +34,24 @@ class BaseBuilder
 
 
     /**
+     * @param array $options
      * @return $this
      */
-    public function updatePaths(): BaseBuilder
+    public function updatePaths($options = []): KMBaseBuilder
     {
-        $file = $this->functionToBuild == "replaceRulesWithRulesOptions" ? "getRequestFile" : "getModelFile";
-        $fileAsStream = $this->functionToBuild == "replaceRulesWithRulesOptions" ? "getRequestFileAsStream" : "getModelFileAsStream";
+        $file = $this->helperFileToGet[$this->functionToBuild][0];
+        $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
         $this->filepath = KMFileHelper::$file("$this->fileName.php");
         $this->fileToCreate = KMFileHelper::$fileAsStream("$this->fileName.php");
         return $this;
     }
 
     /**
-     * @param $file
-     * @param $path
      * @param $columns
+     * @param array $options
      * @return void
      */
-    public static function replaceRulesWithRulesOptions($file, $path, $columns)
+    public static function requestReplacer($columns, $options = [])
     {
         $validation = [];
         $validationRow = null;
@@ -58,15 +65,14 @@ class BaseBuilder
                 $validation = [];
             }
         }
-        static::replacement("//", $validationRow, $file, $path);
+        static::replacement("//", $validationRow, $options["file"], $options["path"]);
     }
 
     /**
-     * @param $modelFileToCreate
-     * @param $modelFilepath
      * @param $columns
+     * @param array $options
      */
-    public function buildColumnInModelWithMigration($modelFileToCreate, $modelFilepath, $columns)
+    public function modelAndMigrationReplacer($columns, $options = [])
     {
         // model area
         $fillable = [];
@@ -79,7 +85,9 @@ class BaseBuilder
         }
         $imp = implode(",", $fillable);
         $protectedFillable .= 'protected $fillable = ' . " [$imp];";
-        static::replacement("//", $protectedFillable, $modelFileToCreate, $modelFilepath);
+
+        static::replacement("//", $protectedFillable, $options["file"], $options["path"]);
+
         $appMigrationPath = File::files(app_path("../database/migrations"));
         $fileMigrationName = $appMigrationPath[array_key_last($appMigrationPath)]->getRelativePathname();
         $fileMigrationPath = app_path("../database/migrations/$fileMigrationName");
@@ -102,14 +110,14 @@ class BaseBuilder
 
     /**
      * @param $column
+     * @param array $options
      * @return mixed
      */
-    public function build($column)
+    public function build($column,$options = [])
     {
         $this->updatePaths();
         $functionToBuild = $this->functionToBuild;
-        $this->$functionToBuild($this->fileToCreate, $this->filepath, $column);
+        $this->$functionToBuild($column, ["file" => $this->fileToCreate, "path" => $this->filepath]);
         return $this->filepath;
-
     }
 }

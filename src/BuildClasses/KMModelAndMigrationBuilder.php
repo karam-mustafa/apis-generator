@@ -1,21 +1,19 @@
 <?php
 
 
-namespace KMLaravel\ApiGenerator\Helpers;
-
+namespace KMLaravel\ApiGenerator\BuildClasses;
 
 use Illuminate\Support\Facades\Artisan;
-use KMLaravel\ApiGenerator\Facade\KMFileHelper;
 
-class KMModelAndMigrationHelper extends BaseBuilder
+class KMModelAndMigrationBuilder extends KMBaseBuilder
 {
     protected $typeToMake = "Model";
 
     /**
      * @param string $option
-     * @return KMModelAndMigrationHelper
+     * @return KMModelAndMigrationBuilder
      */
-    public function callArtisan($option = ''): KMModelAndMigrationHelper
+    public function callArtisan($option = ''): KMModelAndMigrationBuilder
     {
         $command = strtolower($this->typeToMake);
         Artisan::call("make:$command $this->fileName $option");
