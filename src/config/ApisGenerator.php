@@ -11,7 +11,10 @@ return [
     "extra_build_options" => [
         //
     ],
-    "request_auth" => false,
+    "middleware" => [
+        //
+    ],
+    "request_auth" => true,
     'column_type' => [
         "string",
         "text",
