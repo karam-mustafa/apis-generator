@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\{{ controller_name }};
+namespace App\Http\Controllers;
 
 use {{ model_path }};
-use App\Http\Controllers\BaseController;
 use {{ request_path }};
 use {{ resource_path }};
 
 
-class {{ controller_name }} extends BaseController
+class {{ controller_class }} extends BaseController
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -29,8 +24,8 @@ class {{ controller_name }} extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  {{ request_class }} $request
+     * @return Response
      */
     public function store({{ request_class }} $request)
     {
@@ -54,7 +49,7 @@ class {{ controller_name }} extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  {{ request_class }}  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
