@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::namespace("KMLaravel\ApiGenerator\Controllers")
     ->middleware(['web'])
     ->group(function () {
-        Route::group(["middleware" => getChildMiddleware()], function () {
+        Route::group([], function () {
             Route::get('/apisGenerator/index', function () {
                 return view('ApisGenerator/index');
             })->name('apisGenerator.index');
@@ -18,7 +18,7 @@ Route::namespace("KMLaravel\ApiGenerator\Controllers")
     });
 function getParentMiddleware()
 {
-    $parent = config('ApisGenerator.middleware');
+    $parent = config('apis_generator.middleware');
     if (isset($parent)) {
         return array_keys($parent);
     }
@@ -26,9 +26,9 @@ function getParentMiddleware()
 
 function getChildMiddleware()
 {
-    $parent = config('ApisGenerator.middleware');
+    $parent = config('apis_generator.middleware');
     $data = [];
-    foreach (config('ApisGenerator.middleware') as $item) {
+    foreach (config('apis_generator.middleware') as $item) {
         foreach ($item as $item1 => $item2) {
             $data[] = $item2;
         }
