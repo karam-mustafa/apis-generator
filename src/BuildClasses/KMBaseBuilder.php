@@ -16,8 +16,8 @@ class KMBaseBuilder
     protected $fileToCreate;
     protected $functionToBuild;
     protected $helperFileToGet = [
-        "requestReplacer" => ["getRequestFile" , "getRequestFileAsStream"],
-        "modelAndMigrationReplacer" => ["getModelFile" , "getModelFileAsStream"],
+        "requestReplacer" => ["getRequestFile", "getRequestFileAsStream"],
+        "modelAndMigrationReplacer" => ["getModelFile", "getModelFileAsStream"],
     ];
 
     /**
@@ -35,12 +35,16 @@ class KMBaseBuilder
 
     /**
      * @param array $options
+     * @param null $file
+     * @param null $fileAsStream
      * @return $this
      */
-    public function updatePaths($options = []): KMBaseBuilder
+    public function updatePaths($options = [], $file = null, $fileAsStream = null): KMBaseBuilder
     {
-        $file = $this->helperFileToGet[$this->functionToBuild][0];
-        $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
+        if (is_null($file) && is_null($file)) {
+            $file = $this->helperFileToGet[$this->functionToBuild][0];
+            $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
+        }
         $this->filepath = KMFileHelper::$file("$this->fileName.php");
         $this->fileToCreate = KMFileHelper::$fileAsStream("$this->fileName.php");
         return $this;
@@ -113,7 +117,7 @@ class KMBaseBuilder
      * @param array $options
      * @return mixed
      */
-    public function build($column,$options = [])
+    public function build($column, $options = [])
     {
         $this->updatePaths();
         $functionToBuild = $this->functionToBuild;
