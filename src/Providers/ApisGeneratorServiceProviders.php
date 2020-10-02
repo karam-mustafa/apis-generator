@@ -49,6 +49,7 @@ class ApisGeneratorServiceProviders extends ServiceProvider
         $this->publishes([
             $asset."create.blade.php" => resource_path("$views/create.blade.php"),
             $asset."index.blade.php" => resource_path("$views/index.blade.php"),
+            $asset."credential.json" => resource_path("$views/credential.json"),
             $asset."_layouts.blade.php" => resource_path("$views/layouts/_layouts.blade.php"),
             $asset."script.js" => public_path("$scriptPath/script.js"),
             $asset."css.css" => public_path("$cssPath/css.css"),
