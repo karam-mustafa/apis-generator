@@ -43,7 +43,7 @@ class ApisGeneratorServiceProviders extends ServiceProvider
         $scriptPath = "ApisGenerator/scripts";
         $cssPath = "ApisGenerator/css";
         $this->publishes([
-            __DIR__."/../Config/ApisGenerator.php" => config_path("ApisGenerator.php")
+            __DIR__."/../Config/ApisGenerator.php" => config_path("apis_generator.php")
         ] , "apis-generator-config");
 
         $this->publishes([

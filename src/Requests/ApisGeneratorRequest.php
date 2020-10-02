@@ -17,7 +17,7 @@ class ApisGeneratorRequest extends FormRequest
     public
     function authorize()
     {
-        return config('ApisGenerator.request_auth');
+        return config('apis_generator.request_auth');
     }
 
     /**
