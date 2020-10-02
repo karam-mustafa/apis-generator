@@ -25,9 +25,7 @@ class GeneratorService
     private $buildOption;
     private $apiTitle;
     private $column;
-    private $modelPath;
-    private $requestPath;
-    private $resourcePath;
+    private $paths;
 
     public function initialRequest($request): GeneratorService
     {
@@ -41,6 +39,7 @@ class GeneratorService
         $this->buildOption = $buildOptionWithPrefix;
         return $this;
     }
+
     /**
      * @return GeneratorService
      */
@@ -61,6 +60,7 @@ class GeneratorService
             }
         }
         $this->buildController();
+        $this->registerCredential();
     }
 
     /**
@@ -69,10 +69,11 @@ class GeneratorService
     protected function buildMigrations()
     {
         $builder = new KMModelAndMigrationBuilder();
-        $modelPath = $builder->initialResource("$this->apiTitle", "modelAndMigrationReplacer")
+        $modelClass = "$this->apiTitle";
+        $builder->initialResource($modelClass, "modelAndMigrationReplacer")
             ->callArtisan('-m')
             ->build($this->column);
-        $this->modelPath = $modelPath;
+        $this->paths["{{ model_path }}"] = KMFileHelper::getClassNameSpace("model", $modelClass);
     }
 
     /**
@@ -94,23 +95,22 @@ class GeneratorService
     protected function buildRequests()
     {
         $builder = new KMRequestBuilder();
-        $requestPath = $builder->initialResource("$this->apiTitle" . "Request", "requestReplacer")
+        $requestClass = "$this->apiTitle" . "Request";
+        $builder->initialResource($requestClass, "requestReplacer")
             ->callArtisan()
             ->build($this->column);
-        return $this->requestPath = $requestPath;
+        $this->paths["{{ request_path }}"] = KMFileHelper::getClassNameSpace("Requests", $requestClass);
     }
 
     protected function buildController()
     {
         $builder = new KMControllerBuilder();
-        $builder->initialResource("$this->apiTitle" . "Controller", "controllerReplacer")
+        $controllerClass = "$this->apiTitle" . "Controller";
+         $builder->initialResource($controllerClass, "controllerReplacer")
             ->callArtisan()
-            ->build($this->column,
-                [
-                    "model_path" => $this->modelPath ,
-                    "resource_path" => $this->resourcePath ,
-                    "request_path" => $this->requestPath
-                ]);
+            ->build($this->column, array_merge( $this->paths, [
+                "{{ controller_path }}" => KMFileHelper::getClassNameSpace("Controller", $controllerClass),
+            ]));
     }
 
     /**
@@ -119,6 +119,20 @@ class GeneratorService
     protected function buildResource()
     {
         Artisan::call("make:resource " . "$this->apiTitle" . "Resource");
-        return $this->resourcePath = KMFileHelper::getResourceFile("$this->apiTitle" . "Resource.php");
+        return $this->paths["{{ resource_path }}"] = KMFileHelper::getClassNameSpace("Resources", "$this->apiTitle" . "Resource");
+    }
+    /**
+     *
+     */
+    protected function registerCredential()
+    {
+        $data = [
+            $this->apiTitle => [
+                "route" => "$this->apiTitle" . "Controller",
+                "url" =>  "$this->apiTitle",
+                "name" =>  "$this->apiTitle",
+            ]
+        ];
+       return KMFileHelper::setDataToCredentialJsonFile($data);
     }
 }
