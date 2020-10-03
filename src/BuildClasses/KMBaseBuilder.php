@@ -35,6 +35,7 @@ class KMBaseBuilder
      * @param null $file
      * @param null $fileAsStream
      * @return $this
+     *
      */
     public function updatePaths($options = [], $file = null, $fileAsStream = null): KMBaseBuilder
     {
@@ -76,6 +77,8 @@ class KMBaseBuilder
     /**
      * @param $columns
      * @param array $options
+     * the main job is to replace fillabe property in model
+     * and column with type in migration file
      */
     public function modelAndMigrationReplacer($columns, $options = [])
     {
