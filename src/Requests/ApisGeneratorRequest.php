@@ -30,7 +30,8 @@ class ApisGeneratorRequest extends FormRequest
     {
         return [
             "title" => "required|string",
-            "options" => "required",
+            "basic_options" => "required",
+            "advanced_options" => "sometimes",
             "column" => "required",
             "column.*.type" => "required",
         ];
