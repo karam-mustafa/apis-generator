@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \KMLaravel\ApiGenerator\Helpers\KMFileHelper getCredentialJsonFilePath()
  * @method static \KMLaravel\ApiGenerator\Helpers\KMFileHelper getCredentialJsonFileAsJson()
  * @method static \KMLaravel\ApiGenerator\Helpers\KMFileHelper setDataToCredentialJsonFile(array $newData)
+ * @method static \KMLaravel\ApiGenerator\Helpers\KMFileHelper baseControllerExists()
+ * @method static \KMLaravel\ApiGenerator\Helpers\KMFileHelper baseControllerPath()
  */
 class KMFileHelper extends Facade
 {
