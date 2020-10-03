@@ -66,13 +66,14 @@ class GeneratorService
     /**
      *
      */
-    protected function buildMigrations()
+    protected function buildModelAndMigrations()
     {
         $builder = new KMModelAndMigrationBuilder();
         $modelClass = "$this->apiTitle";
+        $migrationRequired = isset($this->buildOption['buildMigration']) ? true : false;
         $builder->initialResource($modelClass, "modelAndMigrationReplacer")
-            ->callArtisan('-m')
-            ->build($this->column);
+            ->callArtisan($migrationRequired ? '-m' : '')
+            ->build($this->column , ["migrationRequired" => $migrationRequired]);
         $this->paths["{{ model_path }}"] = KMFileHelper::getClassNameSpace("model", $modelClass);
     }
 

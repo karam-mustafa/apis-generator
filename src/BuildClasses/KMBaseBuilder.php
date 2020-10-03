@@ -89,15 +89,14 @@ class KMBaseBuilder
         }
         $imp = implode(",", $fillable);
         $protectedFillable .= 'protected $fillable = ' . " [$imp];";
-
         static::replacement("//", $protectedFillable, $options["file"], $options["path"]);
-
-        $appMigrationPath = File::files(app_path("../database/migrations"));
-        $fileMigrationName = $appMigrationPath[array_key_last($appMigrationPath)]->getRelativePathname();
-        $fileMigrationPath = app_path("../database/migrations/$fileMigrationName");
-        $fileMigrationPathAsStream = File::get($fileMigrationPath);
-        static::replacement('$table->id();', $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
-
+        if (isset($options['migrationRequired'])){
+            $appMigrationPath = File::files(app_path("../database/migrations"));
+            $fileMigrationName = $appMigrationPath[array_key_last($appMigrationPath)]->getRelativePathname();
+            $fileMigrationPath = app_path("../database/migrations/$fileMigrationName");
+            $fileMigrationPathAsStream = File::get($fileMigrationPath);
+            static::replacement('$table->id();', $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
+        }
     }
 
     /**
@@ -121,7 +120,9 @@ class KMBaseBuilder
     {
         $this->updatePaths();
         $functionToBuild = $this->functionToBuild;
-        $this->$functionToBuild($column, ["file" => $this->fileToCreate, "path" => $this->filepath]);
+        $this->$functionToBuild($column, array_merge([
+            "file" => $this->fileToCreate, "path" => $this->filepath
+        ] , $options));
         return $this->filepath;
     }
 }
