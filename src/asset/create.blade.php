@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="form-group w-50">
                                         <select class="form-control column_type">
-                                            @foreach(config('ApisGenerator.columnType') as $item)
+                                            @foreach(config('apis_generator.column_type') as $item)
                                                 <option value="{{$item}}">{{$item}}</option>
                                             @endforeach
                                         </select>
@@ -49,13 +49,13 @@
                     <h5>Options </h5>
                     <hr>
                     <div class="row">
-                        @foreach(config('ApisGenerator.buildOptions') as $name => $option)
+                        @foreach(config('apis_generator.build_options') as $name => $option)
                             <div class="col-md-4 mt-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="options[{{$option}}]"
+                                    <input class="form-check-input" checked type="checkbox" name="options[{{$option}}]"
                                            id="{{$option}}">
                                     <label class="form-check-label" for="{{$option}}">
-                                        With {{$name}}
+                                        {{$name}}
                                     </label>
                                 </div>
                             </div>
