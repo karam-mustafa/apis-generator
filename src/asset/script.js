@@ -12,6 +12,7 @@ $(document).ready(() => {
         let column_name = $('.column_name').val();
         let column_type = $('.column_type').val();
         let tr = `
+                    <div class="col-md-4 mb-4">
                     <div class="card api_card my-1 mx-1">
                         <div class="card-body center_elements_space_between p-0">
                             <h6 class="card-title">column: &nbsp; <b>${column_name}</b></h6>
@@ -36,6 +37,7 @@ $(document).ready(() => {
                          <div class="validation_area">
                         </div>
                     </div>
+</div>
         `;
         if (column_name === '') return $('.error_message').text('name can not be empty');
         if (column_arr.includes(column_name)) return $('.error_message').text('this column has been added before');
@@ -114,3 +116,4 @@ particlesJS("background", {
     },
     "retina_detect": true
 });
+//////////////////////////////////////////////////////
