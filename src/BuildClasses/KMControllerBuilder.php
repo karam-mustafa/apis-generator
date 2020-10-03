@@ -9,13 +9,22 @@ use KMLaravel\ApiGenerator\Facade\KMFileHelper;
 
 class KMControllerBuilder extends KMBaseBuilder
 {
+    /**
+     * @var string
+     */
     protected $typeToMake = "Controller";
+    /**
+     * @var array
+     */
     protected $paths = [
         "{{ model_path }}" => [],
         "{{ resource_path }}" => [],
         "{{ request_path }}" => [],
         "{{ controller_path }}" => [],
     ];
+    /**
+     * @var array
+     */
     protected $classes = [
         "{{ model_path }}" => "{{ model_class }}",
         "{{ resource_path }}" => "{{ resource_class }}",
