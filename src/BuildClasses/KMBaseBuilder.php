@@ -3,11 +3,8 @@
 
 namespace KMLaravel\ApiGenerator\BuildClasses;
 
-
 use Illuminate\Support\Facades\File;
 use KMLaravel\ApiGenerator\Helpers\KMFileHelper;
-use ReflectionClass;
-use ReflectionException;
 
 class KMBaseBuilder
 {
@@ -41,11 +38,14 @@ class KMBaseBuilder
      */
     public function updatePaths($options = [], $file = null, $fileAsStream = null): KMBaseBuilder
     {
+        // check if user dose not insert any custom files paths
         if (is_null($file) && is_null($file)) {
             $file = $this->helperFileToGet[$this->functionToBuild][0];
             $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
         }
+        // get this fil according whatever function we use from KMFileHelper facade
         $this->filepath = KMFileHelper::$file("$this->fileName.php");
+        // get this fil according whatever function we use from KMFileHelper facade as stream to read it and doing replacement process
         $this->fileToCreate = KMFileHelper::$fileAsStream("$this->fileName.php");
         return $this;
     }
@@ -60,14 +60,15 @@ class KMBaseBuilder
         $validation = [];
         $validationRow = null;
         foreach ($columns as $name => $item) {
-            if (isset($item['validation'])) {
-                foreach ($item['validation'] as $rule) {
-                    $validation[] = $rule;
-                }
-                $rulesAsString = implode("|", $validation);
-                $validationRow .= "'$name' =>  '$rulesAsString',\n";
-                $validation = [];
+            // if user dose not choose any validations rules the default  rule will be sometimes
+            // this allow Request Class to see fields
+            foreach ($item['validation'] ?? ['sometimes'] as $rule) {
+                $validation[] = $rule;
             }
+            // we combine rules here like "name" => "required|min:1"
+            $rulesAsString = implode("|", $validation);
+            $validationRow .= "'$name' =>  '$rulesAsString',\n";
+            $validation = [];
         }
         static::replacement("//", $validationRow, $options["file"], $options["path"]);
     }
@@ -82,19 +83,29 @@ class KMBaseBuilder
         $fillable = [];
         $protectedFillable = "";
         $databaseColumn = '$table->id();' . "\n";
+        // we build here fillabel for model and column for migration file at once.
         foreach ($columns as $name => $item) {
+            // build fillabe property in model.
             array_push($fillable, "'$name'");
+            // get column type.
             $type = array_key_first($item['type']);
+            // put this column as this ex : $table->string('name').
             $databaseColumn .= '$table->' . "$type('$name'); \n";
         }
         $imp = implode(",", $fillable);
         $protectedFillable .= 'protected $fillable = ' . " [$imp];";
         static::replacement("//", $protectedFillable, $options["file"], $options["path"]);
-        if (isset($options['migrationRequired'])){
+        // check if user choose to build migration.
+        if (isset($options['migrationRequired'])) {
+            // get all migrations files.
             $appMigrationPath = File::files(app_path("../database/migrations"));
+            // get last migration file we create from second steps when we call artisan.
             $fileMigrationName = $appMigrationPath[array_key_last($appMigrationPath)]->getRelativePathname();
+            // get final path.
             $fileMigrationPath = app_path("../database/migrations/$fileMigrationName");
+            // open and read this migration file.
             $fileMigrationPathAsStream = File::get($fileMigrationPath);
+            // now put columns inside file.
             static::replacement('$table->id();', $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
         }
     }
@@ -118,11 +129,15 @@ class KMBaseBuilder
      */
     public function build($column, $options = [])
     {
+        // update path after we build file name and whatever function we want to run.
         $this->updatePaths();
+        // determine this function to run.
         $functionToBuild = $this->functionToBuild;
+        // run this function.
         $this->$functionToBuild($column, array_merge([
             "file" => $this->fileToCreate, "path" => $this->filepath
-        ] , $options));
+        ], $options));
+        // return final file path we process.
         return $this->filepath;
     }
 }
