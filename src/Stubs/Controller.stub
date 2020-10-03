@@ -30,7 +30,7 @@ class {{ controller_class }} extends BaseController
     public function store({{ request_class }} $request)
     {
         $validated_data = $request->validated();
-        $data ={{ resource_class }}::create($validated_data);
+        $data ={{ model_class }}::create($validated_data);
         return $this->getResponse($data, 'add success', 200);
     }
 
