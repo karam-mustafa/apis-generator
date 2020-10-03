@@ -9,13 +9,17 @@ class ApisGeneratorRoutes
 {
     public static function getRoutes()
     {
-       return Route::group([] , function () {
-           $extraRoutes = KMFileHelper::getCredentialJsonFileAsJson();
-           foreach ($extraRoutes as $api) {
-               foreach ($api as $value) {
-                   Route::apiResource($value->url, $value->route);
-               }
-           }
-       });
+        return Route::group([], function () {
+            $extraRoutes = KMFileHelper::getCredentialJsonFileAsJson();
+            foreach ($extraRoutes as $api) {
+                if (isset($api)){
+                    foreach ($api as $value) {
+                        if (isset($value->route)) {
+                            Route::apiResource($value->url, $value->route);
+                        }
+                    }
+                }
+            }
+        });
     }
 }
