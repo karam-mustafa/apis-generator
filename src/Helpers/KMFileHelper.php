@@ -5,7 +5,6 @@ namespace KMLaravel\ApiGenerator\Helpers;
 
 
 use Illuminate\Support\Facades\File;
-use ReflectionException;
 
 class KMFileHelper
 {
@@ -97,7 +96,17 @@ class KMFileHelper
     public static function setDataToCredentialJsonFile($newData)
     {
         $data = self::getCredentialJsonFileAsJson();
+
         array_push( $data, $newData);
+
         File::put(self::getCredentialJsonFilePath() , json_encode($data));
+    }
+
+    public static function baseControllerExists(){
+        return File::exists(static::baseControllerPath());
+    }
+
+    public static function baseControllerPath(){
+        return app_path("Http/Controllers/BaseController.php");
     }
 }
