@@ -1,18 +1,21 @@
 <?php
 
 return [
-    'build_options' => [
+    'basic_build_options' => [
         "Build requests" => 'buildRequests',
         "Build resource" => 'buildResource',
-        "Build base controller if not exists" => 'buildBaseController',
-        "Build migrations" => 'buildMigrations',
+        "Build model" => 'buildModelAndMigrations',
+        "Build migration" => 'buildMigration',
         "Build controller" => 'buildController',
+    ],
+    "advanced_build_options" => [
+        "Build base controller if not exists" => 'runBuildBaseController',
+        "Auto run migrate command" => 'runMigration',
     ],
     "extra_build_options" => [
         //
     ],
     "middleware" => [
-        //
     ],
     "request_auth" => true,
     'column_type' => [
