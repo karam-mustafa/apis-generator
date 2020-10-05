@@ -84,15 +84,25 @@ class KMFileHelper
         return "App\\Http\\$type\\$className";
     }
 
+    /**
+     * @return string
+     */
     public static function getCredentialJsonFilePath()
     {
         return resource_path("Views/ApisGenerator/credential.json");
     }
 
+    /**
+     * @return mixed
+     */
     public static function getCredentialJsonFileAsJson()
     {
         return json_decode(File::get(self::getCredentialJsonFilePath()));
     }
+
+    /**
+     * @param $newData
+     */
     public static function setDataToCredentialJsonFile($newData)
     {
         $data = self::getCredentialJsonFileAsJson();
@@ -102,10 +112,16 @@ class KMFileHelper
         File::put(self::getCredentialJsonFilePath() , json_encode($data));
     }
 
+    /**
+     * @return bool
+     */
     public static function baseControllerExists(){
         return File::exists(static::baseControllerPath());
     }
 
+    /**
+     * @return string
+     */
     public static function baseControllerPath(){
         return app_path("Http/Controllers/BaseController.php");
     }
