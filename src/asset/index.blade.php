@@ -15,20 +15,18 @@
                         <th scope="col">#</th>
                         <th scope="col">Api</th>
                         <th scope="col">Url</th>
-                        <th scope="col">Route</th>
+                        <th scope="col">Route controller</th>
+                        <th scope="col">type</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach(\KMLaravel\ApiGenerator\Facade\KMFileHelper::getCredentialJsonFileAsJson() as $index  => $item)
-                        @php
-                            $item = (array)$item;
-                            $name = array_key_first($item);
-                        @endphp
                         <tr>
                             <td>{{$index}}</td>
-                            <td>{{$name}}</td>
-                            <td>{{$item[$name]->url}}</td>
-                            <td>{{$item[$name]->route}}</td>
+                            <td>{{$item->title}}</td>
+                            <td>/api/{{$item->url}}</td>
+                            <td>{{$item->route}}</td>
+                            <td>{{$item->type}}</td>
                         </tr>
                     @endforeach
                     </tbody>
