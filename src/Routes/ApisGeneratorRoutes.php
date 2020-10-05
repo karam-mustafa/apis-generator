@@ -12,12 +12,8 @@ class ApisGeneratorRoutes
         return Route::group([], function () {
             $extraRoutes = KMFileHelper::getCredentialJsonFileAsJson();
             foreach ($extraRoutes as $api) {
-                if (isset($api)){
-                    foreach ($api as $value) {
-                        if (isset($value->route)) {
-                            Route::apiResource($value->url, $value->route);
-                        }
-                    }
+                if (isset($api->route) && isset($api->url)) {
+                    Route::apiResource($api->url, $api->route);
                 }
             }
         });
