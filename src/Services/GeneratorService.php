@@ -24,11 +24,11 @@ class GeneratorService
     /**
      * @var array
      */
-    private $basicBuildOption;
+    private $basicBuildOption = [];
     /**
      * @var array
      */
-    private $advancedBuildOption;
+    private $advancedBuildOption = [];
     /**
      * @var string
      */
@@ -50,21 +50,15 @@ class GeneratorService
      */
     public function initialRequest($request): GeneratorService
     {
-        $this->request = $request;
-        $this->column = $request->column;
-        $this->apiTitle = $request->title;
-        $basicBuildOptionWithPrefix = [];
-        $advancedBuildOptionWithPrefix = [];
+        [$this->request , $this->column , $this->apiTitle ] = [$request , $request->column , $request->title];
         // append all basic options that actor want to run migration  to new array
         foreach ($this->request->basic_options as $item => $status) {
-            $basicBuildOptionWithPrefix[] = $item;
+            $this->basicBuildOption [] = $item;
         }
-        $this->basicBuildOption = $basicBuildOptionWithPrefix;
         // append all advanced options that actor want to run migration  to new array
         foreach ($this->request->advanced_options as $item => $status) {
-            $advancedBuildOptionWithPrefix[] = $item;
+            $this->advancedBuildOption[] = $item;
         }
-        $this->advancedBuildOption = $advancedBuildOptionWithPrefix;
         return $this;
     }
 
@@ -112,9 +106,9 @@ class GeneratorService
     {
         $builder = new KMModelAndMigrationBuilder();
         $modelClass = "$this->apiTitle";
-        $migrationRequired = in_array("buildMigration" , $this->basicBuildOption);
+        $migrationRequired = in_array("buildMigration" , $this->basicBuildOption) ? "-m" : "";
         $builder->initialResource($modelClass, "modelAndMigrationReplacer")
-            ->callArtisan($migrationRequired ? '-m' : '')
+            ->callArtisan($migrationRequired)
             ->build($this->column, ["migrationRequired" => $migrationRequired]);
         return $this->paths["{{ model_path }}"] = KMFileHelper::getClassNameSpace("model", $modelClass);
     }
@@ -133,10 +127,15 @@ class GeneratorService
 
     /**
      * if actor choose to run migration.
+     * **************************************
+     * we will update options in next release
+     * **************************************
+     * @param string $options
+     * @return int
      */
-    protected function runMigration()
+    protected function runMigration($options = "")
     {
-        return Artisan::call("migrate");
+        return Artisan::call("migrate $options");
     }
 
     /**
@@ -161,6 +160,10 @@ class GeneratorService
      * the idea is take all paths that resulted from the previous process ( request ,  model , migrations ..)
      * and its addition to controller path , and then choose  controllerReplacer function to replaces the
      * resource in controller.stub file and append it to controllers folder.
+     * *******************************************************
+     * we will update option to make actor use if he will used
+     * our controller or choose to build custom controller
+     * *******************************************************
      */
     protected function buildController()
     {
@@ -187,16 +190,18 @@ class GeneratorService
      * @return \KMLaravel\ApiGenerator\Helpers\KMFileHelper
      * in this function we can register some information about our process result
      * like controller name , url ( will be api title as default ) , and title for this api.
-     * @note we will develop route later
+     * *******************************
+     * we will add more flexibility to routing process
+     * *******************************
      */
     protected function registerCredential()
     {
         $data = [
-            $this->apiTitle => [
-                "route" => "$this->apiTitle" . "Controller",
-                "url" => "$this->apiTitle",
-                "name" => "$this->apiTitle",
-            ]
+            "title" => $this->apiTitle,
+            "route" => "$this->apiTitle" . "Controller",
+            "url" => "$this->apiTitle",
+            "name" => "$this->apiTitle",
+            "type" => "resource",
         ];
         return KMFileHelper::setDataToCredentialJsonFile($data);
     }
