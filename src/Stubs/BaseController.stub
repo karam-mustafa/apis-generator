@@ -2,139 +2,126 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\FileExciption;
-use Illuminate\Http\Request;
-use Auth;
-
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 class BaseController extends Controller
 {
 
-    public $showMessage = 'cant show this element please make sure you chose right element';
+    public $notFoundMessage = 'cant find this element please make sure you chose right element';
 
-    public $updateMessage = 'cant update this element please make sure you chose right element';
-
-    public $deleteMessage = 'cant delete this element please make sure you chose right element';
-
-    public function getResponse($data = null, $error = null, $stutes = 200)
+    /**
+     * @param $data
+     * @param string $message
+     * @param null $error
+     * @param int $status
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function getResponse($data, $message = "success response", $error = null, $status = 200)
     {
-        $arr = [
-            'data' => $data,
-            'error' => in_array($stutes, $this->getSuccessState()) ? false : $error, //  check if error is not inside this value (200,201,202) otherwise retrun error message
-            'stutes' => $stutes,
-        ];
+        try {
+            if (gettype($error) == 'integer') $status = $error;
+            $arr = [
+                'data' => $data,
+                'message' => $message,
+                'error' => in_array($status, $this->getSuccessState()) ? false : true,
+                'status' => $status,
+            ];
 
-        return response($arr, $stutes);
+            return response($arr, $status);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
+        }
     }
 
 
+    /**
+     * @return array
+     */
     public function getSuccessState()
     {
         return [200, 201, 202];
     }
 
-    public function ShowCustomElement($model, $id, $resources, $message)
+    /**
+     * @param $model
+     * @param $id
+     * @param $resources
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function showCustomElement($model, $id, $resources)
     {
-        $model_check =  $model::find($id);
-        //check if this table has custom id
-        if (!is_null($model_check)) {
-            // if exist retrun resoponse this table with data wich has custom data
+        try {
+            $model_check = $model::find($id);
+            if (!isset($model_check)) {
+                return $this->getResponse('no data', $this->notFoundMessage, 404);
+            }
             return $this->getResponse(new $resources($model_check));
-        } else {
-            // if dosent exist retrun function  getResponse wich will retrun resopnse with empty data and error message
-            /**
-             * {
-             * "data" : null,
-             * "error" : there is no elemnt to show,
-             * "stutes" : 404,
-             * }
-             */
-            return $this->getResponse('no data', $message, 400);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
         }
     }
 
-    public function UpdateCustomElement($model, $id, $request, $message, $directory = null)
+    /**
+     * @param $model
+     * @param $id
+     * @param $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function updateCustomElement($model, $id, $request)
     {
-        $request->validated();
-        $input = $request->all();
-
-        $model_check =  $model::find($id);
-        //check if this table has custom id
-        if (!is_null($model_check)) {
-            if (!is_null($directory)) {
-                if ($request->hasFile('image')) {
-                    $image = $request->file('image');
-                    // Get filename with the extension
-                    $filenameWithExt = $image->getClientOriginalName();
-                    // Get just filename
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    // Get just ext
-                    $extension = $image->getClientOriginalExtension();
-                    // Filename to store
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                    // Upload file
-                    $path = $image->move(public_path("/" . $directory . "/"), $fileNameToStore);
-                    $input['image'] = $fileNameToStore;
-                    File::delete($directory . '/' . $model_check->image);
-                }
+        try {
+            $inputs = $request->all();
+            $model_check = $model::find($id);
+            if (!isset($model_check)) {
+                return $this->getResponse('no data', $this->notFoundMessage, 404);
             }
-            $model_check->update($input);
-            // if exist retrun resoponse this table with data wich has custom data
-            return $this->getResponse(['message' => 'edit success'], 200);
-        } else {
-            // if dosent exist retrun function  getResponse wich will retrun resopnse with empty data and error message this below is ex for respones formatt
-            /**
-             * {
-             * "data" : null,
-             * "error" : cant update this element,
-             * "stutes" : 404,
-             * }
-             */
-            return $this->getResponse(null, $message, 400);
+            $model_check->update($inputs);
+            return $this->getResponse('no data', "edit success", 200);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
         }
     }
 
-    public function DeleteCustomElement($model, $id, $message)
+    /**
+     * @param $model
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function deleteCustomElement($model, $id)
     {
-        $model_check =  $model::find($id);
-        //check if this table has custom id
-        if (!is_null($model_check)) {
+        try {
+            $model_check = $model::find($id);
+            if (!isset($model_check)) {
+                return $this->getResponse('no data', $this->notFoundMessage, 404);
+            }
             $model_check->delete();
-            // if exist retrun resoponse this table with data wich has custom data
-            return $this->getResponse(['message' => 'delete success'], 200);
-        } else {
-            // if dosent exist retrun function  getResponse wich will retrun resopnse with empty data and error message this below is ex for respones formatt
-            /**
-             * {
-             * "data" : null,
-             * "error" : cant update this element,
-             * "stutes" : 404,
-             * }
-             */
-            return $this->getResponse(null, $message, 400);
+            return $this->getResponse('no data', "delete success", 200);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
         }
     }
 
 
-    public function SaveFile($file, $name,  $type = null, $path)
+    /**
+     * @param $file
+     * @param $nameInRequest
+     * @param $path
+     * @return string
+     * @throws \Exception
+     */
+    public function SaveFile($file, $nameInRequest, $path)
     {
-        $content_type = null;
-        if ($type == 'pdf') {
-            $content_type = substr($file, strpos($file, '.') + 1, strlen($file) - strpos($file, '.'));
-            if ($content_type != 'pdf') {
-                throw new FileExciption('cv file must be pdf type');
+        try {
+            if (request()->hasFile($nameInRequest)) {
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $file->move($path, $fileName);
+                return $fileName;
             }
-        } else {
-            $content_type = $file->getClientOriginalExtension();
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
         }
-        if (request()->hasFile($name)) {
-            $fileName = time() . '.' . $content_type;
-            $file->move($path, $fileName);
-        } else {
-            throw new FileExciption('please make sure you store cv file');
-        }
-        return $fileName;
     }
 }

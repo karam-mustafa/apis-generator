@@ -43,7 +43,7 @@ class {{ controller_class }} extends BaseController
     public function show($id)
     {
 
-        return $this->ShowCustomElement({{ model_class }}::class, $id, {{ resource_class }}::class, $this->showMessage);
+        return $this->showCustomElement({{ model_class }}::class, $id, {{ resource_class }}::class);
     }
 
     /**
@@ -55,7 +55,7 @@ class {{ controller_class }} extends BaseController
      */
     public function update({{ request_class }} $request, $id)
     {
-        return $this->UpdateCustomElement({{ model_class }}::class, $id, $request, $this->updateMessage);
+        return $this->updateCustomElement({{ model_class }}::class, $id, $request);
     }
 
     /**
@@ -66,6 +66,6 @@ class {{ controller_class }} extends BaseController
      */
     public function destroy($id)
     {
-        return $this->DeleteCustomElement({{ model_class }}::class, $id, $this->deleteMessage);
+        return $this->deleteCustomElement({{ model_class }}::class, $id);
     }
 }
