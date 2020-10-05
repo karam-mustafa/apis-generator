@@ -24,6 +24,9 @@ class KMControllerBuilder extends KMBaseBuilder
     ];
     /**
      * @var array
+     * @desc this property use keys in paths property to determine which path we will replace with class
+     * @example if we want to replace {{ model_class }} in controller.stub , so we will get $this->classes['{{ model_path }}']
+     * you will find full logic process in pathsAndClassesReplacer function
      */
     protected $classes = [
         "{{ model_path }}" => "{{ model_class }}",
@@ -43,10 +46,16 @@ class KMControllerBuilder extends KMBaseBuilder
         return $this;
     }
 
+    /**
+     * @param $columns
+     * @param array $options
+     */
     public function controllerReplacer($columns, $options = [])
     {
+        // build paths and classes
         $this->classReplacer($options);
         $file = KMFileHelper::getFilesFromStubsAsStream("Controller");
+        // get controller path we create in callArtisan function from Controllers Folder to inject paths and classes
         $fileInApp = app_path("Http/Controllers/$this->fileName.php");
         $this->pathsAndClassesReplacer($file, $fileInApp);
     }
@@ -62,10 +71,18 @@ class KMControllerBuilder extends KMBaseBuilder
         return $this->filepath;
     }
 
+    /**
+     * @param $option
+     * @desc
+     * Convert options to array to use foreach at all
+     * Find intersecting values between paths and actor inputs
+     * get full class namespace from options
+     * get class name and fill paths array
+     */
     protected function classReplacer($option)
     {
         if (!gettype($option) == 'array') $option = [$option];
-        $this->paths = array_intersect_key($this->paths , $option);
+        $this->paths = array_intersect_key($this->paths, $option);
         foreach ($option as $path => $classNameSpace) {
             $fullNameSpaceClass = explode('\\', $classNameSpace);
             $lastWord = array_key_last(explode('\\', $classNameSpace));
@@ -76,19 +93,37 @@ class KMControllerBuilder extends KMBaseBuilder
         }
     }
 
+    /**
+     * @param string $file
+     * @param mixed | string $fileInApp
+     * @return false|int
+     * @desc the function is doing :
+     * get the namespace from path which is now the main keys in this array
+     * @example
+     * $paths = [
+     * "App\User" => "User"
+     * ]
+     * then get this class "User"
+     * and we put this in last file we modified in $newFile variable
+     */
     protected function pathsAndClassesReplacer($file, $fileInApp)
     {
+        // set default value for file , and at next loop we will override this value for build this controller
         $newFile = $file;
         foreach ($this->paths as $itemToReplace => $values) {
             $nameSpace = array_key_first($values);
             $classType = $this->classes[$itemToReplace];
             $class = $values[$nameSpace];
-            $fileReplaced = str_replace([$itemToReplace , $classType], [$nameSpace, $class], $newFile);
+            $fileReplaced = str_replace([$itemToReplace, $classType], [$nameSpace, $class], $newFile);
             $newFile = $fileReplaced;
         }
         return file_put_contents($fileInApp, $newFile);
     }
 
+    /**
+     * @param $array
+     * @return mixed
+     */
     protected function array_first_value($array)
     {
         return $array[0];
