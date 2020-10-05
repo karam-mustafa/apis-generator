@@ -84,9 +84,7 @@ class KMControllerBuilder extends KMBaseBuilder
         if (!gettype($option) == 'array') $option = [$option];
         $this->paths = array_intersect_key($this->paths, $option);
         foreach ($option as $path => $classNameSpace) {
-            $fullNameSpaceClass = explode('\\', $classNameSpace);
-            $lastWord = array_key_last(explode('\\', $classNameSpace));
-            $className = $this->array_first_value(explode('\\', $fullNameSpaceClass[$lastWord]));
+            $className = $this->getCLassName($classNameSpace);
             $this->paths[$path] = [
                 $classNameSpace => $className,
             ];
@@ -118,14 +116,5 @@ class KMControllerBuilder extends KMBaseBuilder
             $newFile = $fileReplaced;
         }
         return file_put_contents($fileInApp, $newFile);
-    }
-
-    /**
-     * @param $array
-     * @return mixed
-     */
-    protected function array_first_value($array)
-    {
-        return $array[0];
     }
 }

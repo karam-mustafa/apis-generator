@@ -44,6 +44,7 @@ class KMBaseBuilder
             $file = $this->helperFileToGet[$this->functionToBuild][0];
             $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
         }
+
         // get this fil according whatever function we use from KMFileHelper facade
         $this->filepath = KMFileHelper::$file("$this->fileName.php");
         // get this fil according whatever function we use from KMFileHelper facade as stream to read it and doing replacement process
@@ -54,10 +55,12 @@ class KMBaseBuilder
     /**
      * @param $columns
      * @param array $options
-     * @return void
+     * @return false|int
      */
-    public static function requestReplacer($columns, $options = [])
+    public function requestReplacer($columns, $options = [])
     {
+        file_put_contents($this->filepath, KMFileHelper::getFilesFromStubsAsStream("Request"));
+        $this->updatePaths();
         $validation = [];
         $validationRow = null;
         foreach ($columns as $name => $item) {
@@ -71,7 +74,7 @@ class KMBaseBuilder
             $validationRow .= "'$name' =>  '$rulesAsString',\n";
             $validation = [];
         }
-        static::replacement("//", $validationRow, $options["file"], $options["path"]);
+        return $this->replacement(["{{ rules }}", "{{ request_class }}"], [$validationRow, $this->fileName], $this->fileToCreate, $this->filepath);
     }
 
     /**
@@ -97,7 +100,7 @@ class KMBaseBuilder
         }
         $imp = implode(",", $fillable);
         $protectedFillable .= 'protected $fillable = ' . " [$imp];";
-        static::replacement("//", $protectedFillable, $options["file"], $options["path"]);
+        $this->replacement("//", $protectedFillable, $options["file"], $options["path"]);
         // check if user choose to build migration.
         if (isset($options['migrationRequired'])) {
             // get all migrations files.
@@ -109,7 +112,7 @@ class KMBaseBuilder
             // open and read this migration file.
             $fileMigrationPathAsStream = File::get($fileMigrationPath);
             // now put columns inside file.
-            static::replacement('$table->id();', $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
+            return $this->replacement('$table->id();', $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
         }
     }
 
@@ -118,11 +121,15 @@ class KMBaseBuilder
      * @param $replacementWith
      * @param $file
      * @param $path
+     * @return false|int
      */
-    public static function replacement($searchFor, $replacementWith, $file, $path)
+    public function replacement($searchFor, $replacementWith, $file, $path)
     {
+        if (!gettype($searchFor) == 'array' && !gettype($replacementWith) == "array") {
+            [$searchFor, $replacementWith] = [[$searchFor], [$replacementWith]];
+        }
         $newFile = str_replace($searchFor, $replacementWith, $file);
-        file_put_contents($path, $newFile);
+        return file_put_contents($path, $newFile);
     }
 
     /**
@@ -142,5 +149,25 @@ class KMBaseBuilder
         ], $options));
         // return final file path we process.
         return $this->filepath;
+    }
+
+    /**
+     * @param $array
+     * @return mixed
+     */
+    protected function array_first_value($array)
+    {
+        return $array[0];
+    }
+
+    /**
+     * @param $classNameSpace
+     * @return mixed
+     */
+    protected function getClassName($classNameSpace)
+    {
+        $fullNameSpaceClass = explode('\\', $classNameSpace);
+        $lastWord = array_key_last(explode('\\', $classNameSpace));
+        return $this->array_first_value(explode('\\', $fullNameSpaceClass[$lastWord]));
     }
 }

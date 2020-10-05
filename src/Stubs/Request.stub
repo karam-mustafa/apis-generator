@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests\[nameSpacePath];
+namespace App\Http\Requests;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Controllers\BaseController;
 
-class apiNameRequest extends FormRequest
+class {{ request_class }} extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +16,7 @@ class apiNameRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,14 +28,12 @@ class apiNameRequest extends FormRequest
     {
         return [
 
-            [requestArray]
+            {{ rules }}
 
         ];
     }
     protected function failedValidation(Validator $validator)
     {
-        $errors = (new ValidationException($validator))->errors();
-
-        throw new HttpResponseException(response()->json($errors, JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
+        throw new HttpResponseException((new BaseController())->getResponse(null , $validator->errors()->all()));
     }
 }
