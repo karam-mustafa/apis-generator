@@ -6,13 +6,13 @@ Route::namespace("KMLaravel\ApiGenerator\Controllers")
     ->middleware(['web'])
     ->group(function () {
         Route::group([], function () {
-            Route::get('/apisGenerator/index', function () {
+            Route::get('/apis-generator/index', function () {
                 return view('ApisGenerator/index');
             })->name('apisGenerator.index');
-            Route::get('/apisGenerator/create', function () {
+            Route::get('/apis-generator/create', function () {
                 return view('ApisGenerator/create');
             })->name('apisGenerator.create');
-            Route::post('/apisGenerator/create', "ApisGeneratorController@create")
+            Route::post('/apis-generator/create', "ApisGeneratorController@create")
                 ->name('apisGenerator.create.send');
         });
     });
