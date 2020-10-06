@@ -6,7 +6,7 @@ namespace KMLaravel\ApiGenerator\Helpers;
 
 use Illuminate\Support\Facades\File;
 
-class KMFileHelper
+class KMFile
 {
     /**
      * @param $fileName

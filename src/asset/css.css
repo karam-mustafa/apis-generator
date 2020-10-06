@@ -96,6 +96,7 @@ body {
     line-height: 29px;
     transition: 0.5s all ease-in-out;
     color: var(--blue);
+    border: 1px solid;
 }
 
 .add_new_column, .add_new_validation_rule {

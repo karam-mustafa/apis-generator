@@ -16,6 +16,7 @@ return [
         //
     ],
     "middleware" => [
+        //
     ],
     "request_auth" => true,
     'column_type' => [

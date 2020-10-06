@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Facade;
 
 
 /**
- * @method static \KMLaravel\ApiGenerator\Routes\ApisGeneratorRoutes getRoutes ()
+ * @method static \KMLaravel\ApiGenerator\Helpers\KMRoutes getRoutes ()
  **/
-class ApisGeneratorRoutes extends Facade
+class KMRoutesFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'ApisGeneratorRoutes';
+        return 'KMRoutesFacade';
     }
 }

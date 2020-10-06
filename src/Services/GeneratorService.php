@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use KMLaravel\ApiGenerator\BuildClasses\KMControllerBuilder;
 use KMLaravel\ApiGenerator\BuildClasses\KMModelAndMigrationBuilder;
 use KMLaravel\ApiGenerator\BuildClasses\KMRequestBuilder;
-use KMLaravel\ApiGenerator\Facade\KMFileHelper;
+use KMLaravel\ApiGenerator\Facade\KMFileFacade;
 
 class GeneratorService
 {
@@ -69,7 +69,7 @@ class GeneratorService
      */
     public function setBaseControllerExists(): GeneratorService
     {
-        $this->baseControllerExists = KMFileHelper::baseControllerExists();
+        $this->baseControllerExists = KMFileFacade::baseControllerExists();
         return $this;
     }
 
@@ -97,7 +97,7 @@ class GeneratorService
     }
 
     /**
-     * @return \KMLaravel\ApiGenerator\Helpers\KMFileHelper
+     * @return \KMLaravel\ApiGenerator\Helpers\KMFile
      * this function is use separate class its work like a services to auto build model and check from
      * migration options and finally push the path for model to paths property to use it when we create
      * controller as final step.
@@ -110,7 +110,7 @@ class GeneratorService
         $builder->initialResource($modelClass, "modelAndMigrationReplacer")
             ->callArtisan($migrationRequired)
             ->build($this->column, ["migrationRequired" => $migrationRequired]);
-        return $this->paths["{{ model_path }}"] = KMFileHelper::getClassNameSpace("model", $modelClass);
+        return $this->paths["{{ model_path }}"] = KMFileFacade::getClassNameSpace("model", $modelClass);
     }
 
     /**
@@ -119,8 +119,8 @@ class GeneratorService
     protected function runBuildBaseController()
     {
         if (!$this->baseControllerExists) {
-            file_put_contents(KMFileHelper::baseControllerPath(),
-                File::get(KMFileHelper::getFilesFromStubs("BaseController"))
+            file_put_contents(KMFileFacade::baseControllerPath(),
+                File::get(KMFileFacade::getFilesFromStubs("BaseController"))
             );
         }
     }
@@ -139,7 +139,7 @@ class GeneratorService
     }
 
     /**
-     * @return \KMLaravel\ApiGenerator\Helpers\KMFileHelper
+     * @return \KMLaravel\ApiGenerator\Helpers\KMFile
      * this function is used KMRequestBuilder separate class its work like a services to auto build request and
      * put the rule which actor is selected and finally push the path for model to paths property to use it when
      * we create controller as final step.
@@ -151,7 +151,7 @@ class GeneratorService
         $builder->initialResource($requestClass, "requestReplacer")
             ->callArtisan()
             ->build($this->column);
-        return $this->paths["{{ request_path }}"] = KMFileHelper::getClassNameSpace("Requests", $requestClass);
+        return $this->paths["{{ request_path }}"] = KMFileFacade::getClassNameSpace("Requests", $requestClass);
     }
 
     /**
@@ -173,7 +173,7 @@ class GeneratorService
         return $builder->initialResource($controllerClass, "controllerReplacer")
             ->callArtisan()
             ->$controllerBuildType($this->column, array_merge($this->paths, [
-                "{{ controller_path }}" => KMFileHelper::getClassNameSpace("Controller", $controllerClass),
+                "{{ controller_path }}" => KMFileFacade::getClassNameSpace("Controller", $controllerClass),
             ]));
     }
 
@@ -184,11 +184,11 @@ class GeneratorService
     protected function buildResource()
     {
         Artisan::call("make:resource " . "$this->apiTitle" . "Resource");
-        return $this->paths["{{ resource_path }}"] = KMFileHelper::getClassNameSpace("Resources", "$this->apiTitle" . "Resource");
+        return $this->paths["{{ resource_path }}"] = KMFileFacade::getClassNameSpace("Resources", "$this->apiTitle" . "Resource");
     }
 
     /**
-     * @return \KMLaravel\ApiGenerator\Helpers\KMFileHelper
+     * @return \KMLaravel\ApiGenerator\Helpers\KMFile
      * in this function we can register some information about our process result
      * like controller name , url ( will be api title as default ) , and title for this api.
      * *******************************
@@ -204,6 +204,6 @@ class GeneratorService
             "name" => "$this->apiTitle",
             "type" => "resource",
         ];
-        return KMFileHelper::setDataToCredentialJsonFile($data);
+        return KMFileFacade::setDataToCredentialJsonFile($data);
     }
 }

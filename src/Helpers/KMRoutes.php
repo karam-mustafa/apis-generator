@@ -1,16 +1,16 @@
 <?php
 
-namespace KMLaravel\ApiGenerator\Routes;
+namespace KMLaravel\ApiGenerator\Helpers;
 
 use Illuminate\Support\Facades\Route;
-use KMLaravel\ApiGenerator\Facade\KMFileHelper;
+use KMLaravel\ApiGenerator\Facade\KMFileFacade;
 
-class ApisGeneratorRoutes
+class KMRoutes
 {
     public static function getRoutes()
     {
         return Route::group([], function () {
-            $extraRoutes = KMFileHelper::getCredentialJsonFileAsJson();
+            $extraRoutes = KMFileFacade::getCredentialJsonFileAsJson();
             if (isset($extraRoutes)){
                 foreach ($extraRoutes as $api) {
                     if (isset($api->route) && isset($api->url)) {

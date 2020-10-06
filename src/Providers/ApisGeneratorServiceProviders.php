@@ -3,8 +3,9 @@
 namespace KMLaravel\ApiGenerator\Providers;
 use Illuminate\Support\ServiceProvider;
 use KMLaravel\ApiGenerator\Commands\TestCommands;
-use KMLaravel\ApiGenerator\Helpers\KMFileHelper;
-use KMLaravel\ApiGenerator\Routes\ApisGeneratorRoutes;
+use KMLaravel\ApiGenerator\Helpers\KMFile;
+use KMLaravel\ApiGenerator\Helpers\KMFunctions;
+use KMLaravel\ApiGenerator\Helpers\KMRoutes;
 
 class ApisGeneratorServiceProviders extends ServiceProvider
 {
@@ -29,11 +30,14 @@ class ApisGeneratorServiceProviders extends ServiceProvider
 
     protected function registerFacades()
     {
-        $this->app->singleton("KMFileHelper" , function ($app){
-            return new KMFileHelper();
+        $this->app->singleton("KMFileFacade" , function ($app){
+            return new KMFile();
         });
-        $this->app->singleton("ApisGeneratorRoutes" , function ($app){
-            return new ApisGeneratorRoutes();
+        $this->app->singleton("KMRoutesFacade" , function ($app){
+            return new KMRoutes();
+        });
+        $this->app->singleton("KMFunctionsFacade" , function ($app){
+            return new KMFunctions();
         });
     }
     protected function publishesPackages()

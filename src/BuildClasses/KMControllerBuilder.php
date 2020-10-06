@@ -5,7 +5,7 @@ namespace KMLaravel\ApiGenerator\BuildClasses;
 
 
 use Illuminate\Support\Facades\Artisan;
-use KMLaravel\ApiGenerator\Facade\KMFileHelper;
+use KMLaravel\ApiGenerator\Facade\KMFileFacade;
 
 class KMControllerBuilder extends KMBaseBuilder
 {
@@ -54,7 +54,7 @@ class KMControllerBuilder extends KMBaseBuilder
     {
         // build paths and classes
         $this->classReplacer($options);
-        $file = KMFileHelper::getFilesFromStubsAsStream("Controller");
+        $file = KMFileFacade::getFilesFromStubsAsStream("Controller");
         // get controller path we create in callArtisan function from Controllers Folder to inject paths and classes
         $fileInApp = app_path("Http/Controllers/$this->fileName.php");
         $this->pathsAndClassesReplacer($file, $fileInApp);

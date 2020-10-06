@@ -16,7 +16,7 @@ class {{ request_class }} extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return {{ request_auth }};
     }
 
     /**

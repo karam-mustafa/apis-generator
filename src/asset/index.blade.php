@@ -20,7 +20,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach(\KMLaravel\ApiGenerator\Facade\KMFileHelper::getCredentialJsonFileAsJson() as $index  => $item)
+                    @foreach(\KMLaravel\ApiGenerator\Facade\KMFileFacade::getCredentialJsonFileAsJson() as $index  => $item)
                         <tr>
                             <td>{{$index}}</td>
                             <td>{{$item->title}}</td>

@@ -4,7 +4,8 @@
 namespace KMLaravel\ApiGenerator\BuildClasses;
 
 use Illuminate\Support\Facades\File;
-use KMLaravel\ApiGenerator\Helpers\KMFileHelper;
+use KMLaravel\ApiGenerator\Facade\KMFunctionsFacade;
+use KMLaravel\ApiGenerator\Helpers\KMFile;
 
 class KMBaseBuilder
 {
@@ -45,10 +46,10 @@ class KMBaseBuilder
             $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
         }
 
-        // get this fil according whatever function we use from KMFileHelper facade
-        $this->filepath = KMFileHelper::$file("$this->fileName.php");
-        // get this fil according whatever function we use from KMFileHelper facade as stream to read it and doing replacement process
-        $this->fileToCreate = KMFileHelper::$fileAsStream("$this->fileName.php");
+        // get this fil according whatever function we use from KMFileFacade facade
+        $this->filepath = KMFile::$file("$this->fileName.php");
+        // get this fil according whatever function we use from KMFileFacade facade as stream to read it and doing replacement process
+        $this->fileToCreate = KMFile::$fileAsStream("$this->fileName.php");
         return $this;
     }
 
@@ -59,7 +60,7 @@ class KMBaseBuilder
      */
     public function requestReplacer($columns, $options = [])
     {
-        file_put_contents($this->filepath, KMFileHelper::getFilesFromStubsAsStream("Request"));
+        file_put_contents($this->filepath, KMFile::getFilesFromStubsAsStream("Request"));
         $this->updatePaths();
         $validation = [];
         $validationRow = null;
@@ -74,7 +75,10 @@ class KMBaseBuilder
             $validationRow .= "'$name' =>  '$rulesAsString',\n";
             $validation = [];
         }
-        return $this->replacement(["{{ rules }}", "{{ request_class }}"], [$validationRow, $this->fileName], $this->fileToCreate, $this->filepath);
+        return $this->replacement(
+            ["{{ rules }}", "{{ request_class }}" , "{{ request_auth }}"]
+            , [$validationRow, $this->fileName , KMFunctionsFacade::getRequestAuthAccessibility()],
+            $this->fileToCreate, $this->filepath);
     }
 
     /**
