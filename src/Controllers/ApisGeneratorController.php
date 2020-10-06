@@ -20,6 +20,7 @@ class apisGeneratorController extends Controller
         $this->generatorService->initialRequest($request)->generateApi();
         /** @scrutinizer ignore-call */
         session()->flash('alert_type' , 'success');
+        /** @scrutinizer ignore-call */
         session()->flash('success' , 'create new api successfully');
         return /** @scrutinizer ignore-call */ redirect()->route('apisGenerator.index');
     }
