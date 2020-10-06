@@ -1,7 +1,11 @@
 ## Apis Generator
+[![Latest Stable Version](https://poser.pugx.org/kmlaravel/api-generator/v)](//packagist.org/packages/kmlaravel/api-generator) 
+[![Total Downloads](https://poser.pugx.org/kmlaravel/api-generator/downloads)](//packagist.org/packages/kmlaravel/api-generator) 
+[![License](https://poser.pugx.org/kmlaravel/api-generator/license)](//packagist.org/packages/kmlaravel/api-generator)
+
 this package was developed to accelerate your
 work by building for you new api just a few clicks , 
-and this includes creating files
+and this includes creating files :
 - Model : with fillable.
 - Request : with validations rules.
 - Controller : with full crud based on base controller.
