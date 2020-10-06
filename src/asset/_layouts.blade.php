@@ -19,7 +19,7 @@
             <div class="navbar_body">
                 <ul class="nav h-100 center_elements_space_between w-100">
                     <li class="nav-item   hvr-bounce-to-top">
-                        <a class="nav-link active" href="{{route("apisGenerator.index")}}">Home</a>
+                        <a class="nav-link active" href="{{route("apisGenerator.index")}}">All</a>
                     </li>
                     <li class="nav-item   hvr-bounce-to-top">
                         <a class="nav-link active" href="{{route("apisGenerator.create")}}">Create New</a>

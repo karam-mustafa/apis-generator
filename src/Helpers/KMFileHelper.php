@@ -89,7 +89,9 @@ class KMFileHelper
      */
     public static function getCredentialJsonFilePath()
     {
-        return resource_path("Views/ApisGenerator/credential.json");
+        if (File::exists(resource_path("Views/ApisGenerator/credential.json"))) {
+            return resource_path("Views/ApisGenerator/credential.json");
+        }
     }
 
     /**
@@ -97,7 +99,9 @@ class KMFileHelper
      */
     public static function getCredentialJsonFileAsJson()
     {
-        return json_decode(File::get(self::getCredentialJsonFilePath()));
+        if (File::exists(resource_path("Views/ApisGenerator/credential.json"))) {
+            return json_decode(File::get(self::getCredentialJsonFilePath()));
+        }
     }
 
     /**
@@ -107,22 +111,24 @@ class KMFileHelper
     {
         $data = self::getCredentialJsonFileAsJson();
 
-        array_push( $data, $newData);
+        array_push($data, $newData);
 
-        File::put(self::getCredentialJsonFilePath() , json_encode($data));
+        File::put(self::getCredentialJsonFilePath(), json_encode($data));
     }
 
     /**
      * @return bool
      */
-    public static function baseControllerExists(){
+    public static function baseControllerExists()
+    {
         return File::exists(static::baseControllerPath());
     }
 
     /**
      * @return string
      */
-    public static function baseControllerPath(){
+    public static function baseControllerPath()
+    {
         return app_path("Http/Controllers/BaseController.php");
     }
 }
