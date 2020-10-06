@@ -120,7 +120,7 @@ class GeneratorService
     {
         if (!$this->baseControllerExists) {
             file_put_contents(KMFileFacade::baseControllerPath(),
-                File::get(KMFileFacade::getFilesFromStubs(/** @scrutinizer ignore-call */"BaseController"))
+                File::get(KMFileFacade::/** @scrutinizer ignore-call */getFilesFromStubs(/** @scrutinizer ignore-call */"BaseController"))
             );
         }
     }
