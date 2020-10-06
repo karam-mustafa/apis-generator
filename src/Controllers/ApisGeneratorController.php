@@ -18,8 +18,9 @@ class apisGeneratorController extends Controller
     public function create(ApisGeneratorRequest $request)
     {
         $this->generatorService->initialRequest($request)->generateApi();
+        /** @scrutinizer ignore-call */
         session()->flash('alert_type' , 'success');
         session()->flash('success' , 'create new api successfully');
-        return redirect()->route('apisGenerator.index');
+        return /** @scrutinizer ignore-call */ redirect()->route('apisGenerator.index');
     }
 }

@@ -32,7 +32,7 @@ class KMFile
      */
     public static function getRequestFile($fileName)
     {
-        return app_path("Http/Requests/$fileName");
+        return /** @scrutinizer ignore-call */app_path("Http/Requests/$fileName");
     }
 
     /**
@@ -41,7 +41,7 @@ class KMFile
      */
     public static function getResourceFile($fileName)
     {
-        return app_path("Http/Resources/$fileName");
+        return /** @scrutinizer ignore-call */app_path("Http/Resources/$fileName");
     }
 
     /**
@@ -50,7 +50,7 @@ class KMFile
      */
     public static function getModelFile($fileName)
     {
-        return app_path("$fileName");
+        return /** @scrutinizer ignore-call */app_path("$fileName");
     }
 
     /**
@@ -59,7 +59,7 @@ class KMFile
      */
     public static function getRequestFileAsStream($fileName)
     {
-        return File::get(app_path("Http/Requests/$fileName"));
+        return File::get(/** @scrutinizer ignore-call */app_path("Http/Requests/$fileName"));
     }
 
     /**
@@ -68,7 +68,7 @@ class KMFile
      */
     public static function getModelFileAsStream($fileName)
     {
-        return File::get(app_path($fileName));
+        return File::get(/** @scrutinizer ignore-call */app_path($fileName));
     }
 
     /**
@@ -89,8 +89,8 @@ class KMFile
      */
     public static function getCredentialJsonFilePath()
     {
-        if (File::exists(resource_path("Views/ApisGenerator/credential.json"))) {
-            return resource_path("Views/ApisGenerator/credential.json");
+        if (File::exists(/** @scrutinizer ignore-call */resource_path("Views/ApisGenerator/credential.json"))) {
+            return /** @scrutinizer ignore-call */resource_path("Views/ApisGenerator/credential.json");
         }
     }
 
@@ -99,7 +99,7 @@ class KMFile
      */
     public static function getCredentialJsonFileAsJson()
     {
-        if (File::exists(resource_path("Views/ApisGenerator/credential.json"))) {
+        if (File::exists(/** @scrutinizer ignore-call */resource_path("Views/ApisGenerator/credential.json"))) {
             return json_decode(File::get(self::getCredentialJsonFilePath()));
         }
     }
@@ -111,7 +111,7 @@ class KMFile
     {
         $data = self::getCredentialJsonFileAsJson();
 
-        array_push($data, $newData);
+        array_push(/** @scrutinizer ignore-type */$data, $newData);
 
         File::put(self::getCredentialJsonFilePath(), json_encode($data));
     }

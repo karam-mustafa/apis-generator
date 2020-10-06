@@ -33,15 +33,15 @@ class KMBaseBuilder
 
     /**
      * @param array $options
-     * @param null $file
-     * @param null $fileAsStream
+     * @param null|string $file
+     * @param null|string $fileAsStream
      * @return $this
      *
      */
     public function updatePaths($options = [], $file = null, $fileAsStream = null): KMBaseBuilder
     {
         // check if user dose not insert any custom files paths
-        if (is_null($file) && is_null($file)) {
+        if (is_null($file) && is_null($fileAsStream)) {
             $file = $this->helperFileToGet[$this->functionToBuild][0];
             $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
         }

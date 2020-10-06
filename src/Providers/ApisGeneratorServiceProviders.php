@@ -2,7 +2,6 @@
 
 namespace KMLaravel\ApiGenerator\Providers;
 use Illuminate\Support\ServiceProvider;
-use KMLaravel\ApiGenerator\Commands\TestCommands;
 use KMLaravel\ApiGenerator\Helpers\KMFile;
 use KMLaravel\ApiGenerator\Helpers\KMFunctions;
 use KMLaravel\ApiGenerator\Helpers\KMRoutes;
@@ -17,11 +16,7 @@ class ApisGeneratorServiceProviders extends ServiceProvider
 
     }
 
-    public function register(){
-        $this->commands([
-            TestCommands::class
-        ]);
-    }
+    public function register(){}
 
     protected function publishesBaseControllers()
     {

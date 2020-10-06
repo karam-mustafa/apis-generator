@@ -56,7 +56,7 @@ class KMControllerBuilder extends KMBaseBuilder
         $this->classReplacer($options);
         $file = KMFileFacade::getFilesFromStubsAsStream("Controller");
         // get controller path we create in callArtisan function from Controllers Folder to inject paths and classes
-        $fileInApp = app_path("Http/Controllers/$this->fileName.php");
+        $fileInApp = /** @scrutinizer ignore-call */app_path("Http/Controllers/$this->fileName.php");
         $this->pathsAndClassesReplacer($file, $fileInApp);
     }
 
@@ -102,7 +102,7 @@ class KMControllerBuilder extends KMBaseBuilder
     }
 
     /**
-     * @param string $file
+     * @param string|mixed $file
      * @param mixed | string $fileInApp
      * @return false|int
      * @desc the function is doing :
