@@ -39,8 +39,7 @@ Laravel uses Package Auto-Discovery, so doesn't require you to manually add the 
 ```shell
 php artisan vendor:publish --tag=apis-generator-config
 ```
-In `apis_generator`.php configuration file you can determine the properties of the default values and some behaviors.
-- choose database columns , we already take columns type from [Laravel Migrations](https://laravel.com/docs/6.x/migrations)
+In `apis_generator.php` configuration file you can determine the properties of the default values and some behaviors.
 
 #### 3 - Copy the package assets to your local resource views with the publish command:
 ```shell
@@ -55,12 +54,57 @@ this file contains an array that in turn contains an objects each one contains r
 
 to run this route we have to add this facade class in your `routes/api.php` file.
 ```php 
-\KMLaravel\ApiGenerator\Facade\ApisGeneratorRoutes::getRoutes();
+\KMLaravel\ApiGenerator\Facade\KMRoutesFacade::getRoutes();
 ```
 now all your routes load automatically from routes in `credential.json` file.
+#### 2 - create your api
+you should navigate to `{{ your base url }}/apis-generator/create`.
+#### 3 - view all api you have made
+you can navigate to `{{ your base url }}/apis-generator/index`.
+----------------
+config options
+----------------
+> add middleware to package route
+>
+the initial package route middleware is `web`
+if you want to add extra middleware to `{{ your base url }}/apis-generator/create` for example
+you shod add middleware key to middleware array.
+>> ##### example
+```php
+    // in apis_generator
+    "middleware" => [
+        "admin"
+    ],
+```
+> choose database columns
+>
+we already take columns type from [Laravel Migrations](https://laravel.com/docs/6.x/migrations),
+so if you want to add extra columns type for database , you should add it to `column_type` array.
+
+> request authorize function
+>
+when we build request file [laravel request validation](https://laravel.com/docs/6.x/validation#form-request-validation)
+we will replace `return false` in your request with the value in `request_auth' key in config file.
+
+> inputs name 
+>
+you can modify options input checkbox label from `basic_build_options` and `advanced_build_options` keys in config file.
 
 What next :
 -----------
 - add seeder options with factory.
 - add api actions which include edit and delete this api.
 - add more migrations options to build columns.
+
+Changelog
+---------
+Please see the CHANGELOG for more information about what has changed or updated or added recently.
+
+Security
+--------
+If you discover any security related issues, please email them first to karam2mustafa@gmail.com, 
+if we do not fix it within a short period of time please open new issue describe your problem. 
+
+Credits
+-------
+[karam mustafa](https://www.linkedin.com/in/karam2mustafa)
