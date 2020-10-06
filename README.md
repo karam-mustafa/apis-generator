@@ -50,7 +50,7 @@ php artisan vendor:publish --tag=apis-generator-asset
 
 Basic usage
 -----------
-#### 1 - Load your route
+#### 1 - Load your routes
 As we said a little while ago we save your process result in `resource/views/ApiGenerator/credential.josn` 
 this file contains an array that in turn contains an objects each one contains route , url , api title , and type for your api .
 
