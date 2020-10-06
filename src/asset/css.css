@@ -128,7 +128,10 @@ input, select {
     border: var(--bordered);
     text-indent: 10px;
 }
-
+input:focus{
+    box-shadow: 0 0 0 0 !important;
+    outline: none;
+}
 .api_card {
     border-radius: 10px;
     padding: 10px;
