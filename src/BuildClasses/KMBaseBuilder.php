@@ -82,6 +82,7 @@ class KMBaseBuilder
      * @param array $options
      * the main job is to replace fillabe property in model
      * and column with type in migration file
+     * @return false|int
      */
     public function modelAndMigrationReplacer($columns, $options = [])
     {
