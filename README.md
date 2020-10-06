@@ -58,10 +58,12 @@ to run this route we have to add this facade class in your `routes/api.php` file
 ```
 now all your routes load automatically from routes in `credential.json` file.
 #### 2 - create your api
+
 you should navigate to `{{ your base url }}/apis-generator/create`.
+
 #### 3 - view all api you have made
 you can navigate to `{{ your base url }}/apis-generator/index`.
-----------------
+
 config options
 ----------------
 > add middleware to package route
