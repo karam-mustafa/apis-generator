@@ -169,9 +169,10 @@ class GeneratorService
     {
         $builder = new KMControllerBuilder();
         $controllerClass = "$this->apiTitle" . "Controller";
+        $controllerBuildType = !$this->baseControllerExists ? "basicBuild" : "build";
         return $builder->initialResource($controllerClass, "controllerReplacer")
             ->callArtisan()
-            ->build($this->column, array_merge($this->paths, [
+            ->$controllerBuildType($this->column, array_merge($this->paths, [
                 "{{ controller_path }}" => KMFileHelper::getClassNameSpace("Controller", $controllerClass),
             ]));
     }

@@ -70,6 +70,16 @@ class KMControllerBuilder extends KMBaseBuilder
         $this->controllerReplacer($column, $options);
         return $this->filepath;
     }
+    /**
+     * @param $column
+     * @param array $options
+     * @return mixed
+     * @desc this function run as simply artisan make:controller command if the base controller dose not exits.
+     */
+    public function basicBuild($column, $options = [])
+    {
+        return $this->filepath;
+    }
 
     /**
      * @param $option
