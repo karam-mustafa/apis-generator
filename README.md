@@ -7,6 +7,9 @@
 api generator was developed for [laravel 5.8+](http://laravel.com/) to accelerate your
 work by building for you new api just a few clicks .
 
+this package came with base controller which helps to handle some logic and generate response, and we will develop all functions that help developers to reduced development time,
+and simple interface to manage api creations and view all api you had made before based on credential json file. 
+
 What this package build ?
 -------------------------
 this package auto build :
@@ -21,10 +24,6 @@ Features
 - Friendly simple interface to create your api.
 - Giving you the choice to choose what to build.
 - The large development space in the future update and we will  add a lot features.
-
-this package came with base controller which helps to handle some logic and generate response, and we will develop all functions that help developers to reduced development time.
-
-this package came with simple interface to manage api creations and view all api you had made before based on credential json file. 
 
 Installation
 ------------
