@@ -66,29 +66,29 @@ you can navigate to `{{ your base url }}/apis-generator/index`.
 
 config options
 ----------------
-> add middleware to package route
+> #### add middleware to package route
 >
-the initial package route middleware is `web`
+- the initial package route middleware is `web`
 if you want to add extra middleware to `{{ your base url }}/apis-generator/create` for example
 you shod add middleware key to middleware array.
->> ##### example
 ```php
+    // example
     // in apis_generator
     "middleware" => [
         "admin"
     ],
 ```
-> choose database columns
+> #### choose database columns
 >
-we already take columns type from [Laravel Migrations](https://laravel.com/docs/6.x/migrations),
+- we already take columns type from [Laravel Migrations](https://laravel.com/docs/6.x/migrations),
 so if you want to add extra columns type for database , you should add it to `column_type` array.
 
-> request authorize function
+> #### request authorize function
 >
-when we build request file [laravel request validation](https://laravel.com/docs/6.x/validation#form-request-validation)
+- when we build request file [laravel request validation](https://laravel.com/docs/6.x/validation#form-request-validation)
 we will replace `return false` in your request with the value in `request_auth' key in config file.
 
-> inputs name 
+> #### inputs label 
 >
 you can modify options input checkbox label from `basic_build_options` and `advanced_build_options` keys in config file.
 
