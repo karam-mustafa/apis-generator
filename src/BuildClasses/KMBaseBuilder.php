@@ -9,19 +9,34 @@ use KMLaravel\ApiGenerator\Helpers\KMFile;
 
 class KMBaseBuilder
 {
+    /**
+     * @var string
+     */
     protected $fileName;
+    /**
+     * @var string
+     */
     protected $filepath;
+    /**
+     * @var string|mixed
+     */
     protected $fileToCreate;
+    /**
+     * @var string
+     */
     protected $functionToBuild;
+    /**
+     * @var array
+     */
     protected $helperFileToGet = [
         "requestReplacer" => ["getRequestFile", "getRequestFileAsStream"],
         "modelAndMigrationReplacer" => ["getModelFile", "getModelFileAsStream"],
     ];
 
     /**
-     * @param $fileName
-     * @param $functionToBuild
-     * @return $this
+     * @param string $fileName
+     * @param string $functionToBuild
+     * @return KMBaseBuilder
      */
     public function initialResource($fileName, $functionToBuild): KMBaseBuilder
     {
@@ -35,7 +50,7 @@ class KMBaseBuilder
      * @param array $options
      * @param null|string $file
      * @param null|string $fileAsStream
-     * @return $this
+     * @return KMBaseBuilder
      *
      */
     public function updatePaths($options = [], $file = null, $fileAsStream = null): KMBaseBuilder
@@ -54,7 +69,7 @@ class KMBaseBuilder
     }
 
     /**
-     * @param $columns
+     * @param array $columns
      * @param array $options
      * @return false|int
      */
@@ -82,7 +97,7 @@ class KMBaseBuilder
     }
 
     /**
-     * @param $columns
+     * @param array $columns
      * @param array $options
      * the main job is to replace fillabe property in model
      * and column with type in migration file
@@ -122,10 +137,10 @@ class KMBaseBuilder
     }
 
     /**
-     * @param $searchFor
-     * @param $replacementWith
-     * @param $file
-     * @param $path
+     * @param array $searchFor
+     * @param array $replacementWith
+     * @param string $file
+     * @param string $path
      * @return false|int
      */
     public function replacement($searchFor, $replacementWith, $file, $path)
@@ -138,7 +153,7 @@ class KMBaseBuilder
     }
 
     /**
-     * @param $column
+     * @param array $column
      * @param array $options
      * @return mixed
      */
@@ -157,7 +172,7 @@ class KMBaseBuilder
     }
 
     /**
-     * @param $array
+     * @param array $array
      * @return mixed
      */
     protected function array_first_value($array)
@@ -166,7 +181,7 @@ class KMBaseBuilder
     }
 
     /**
-     * @param $classNameSpace
+     * @param array | mixed $classNameSpace
      * @return mixed
      */
     protected function getClassName($classNameSpace)
