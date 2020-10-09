@@ -19,11 +19,17 @@ class ApisGeneratorServiceProviders extends ServiceProvider
     public function register(){
     }
 
+    /**
+     *
+     */
     protected function publishesBaseControllers()
     {
 
     }
 
+    /**
+     *
+     */
     protected function registerFacades()
     {
         $this->app->singleton("KMFileFacade" , function ($app){
@@ -36,6 +42,10 @@ class ApisGeneratorServiceProviders extends ServiceProvider
             return new KMFunctions();
         });
     }
+
+    /**
+     *
+     */
     protected function publishesPackages()
     {
         $asset = __DIR__."/../Asset/";
@@ -57,6 +67,9 @@ class ApisGeneratorServiceProviders extends ServiceProvider
 
     }
 
+    /**
+     *
+     */
     private function loadResource()
     {
         $slash = DIRECTORY_SEPARATOR;
