@@ -38,14 +38,18 @@ The first step is using composer to install the package and automatically update
 composer require kmlaravel/api-generator
 ```
 Laravel uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
-
-#### 2 - Copy the package config to your local config with the publish command:
+#### 3 - Copy the package config to your local config with the publish command:
+```shell
+php artisan vendor:publish --tag=apis-generator-config
+```
+- or you may publish asset and config separately.
+#### 3 - Copy the package config to your local config with the publish command:
 ```shell
 php artisan vendor:publish --tag=apis-generator-config
 ```
 In `apis_generator.php` configuration file you can determine the properties of the default values and some behaviors.
 
-#### 3 - Copy the package assets to your local resource views with the publish command:
+#### 4 - Copy the package assets to your local resource views with the publish command:
 ```shell
 php artisan vendor:publish --tag=apis-generator-asset
 ```
