@@ -31,32 +31,32 @@ Features
 
 Installation
 ------------
-#### 1 - Dependency
+##### 1 - Dependency
 The first step is using composer to install the package and automatically update your composer.json file, you can do this by running:
 
 ```shell
 composer require kmlaravel/api-generator
 ```
-Laravel uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
-#### 3 - Copy the package config to your local config with the publish command:
+- #### Laravel uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
+##### 3 - Copy the package config to your local config with the publish command:
 ```shell
 php artisan vendor:publish --tag=apis-generator-config
 ```
-- or you may publish asset and config separately.
-#### 3 - Copy the package config to your local config with the publish command:
+- #### or you may publish asset and config separately.
+##### 3 - Copy the package config to your local config with the publish command:
 ```shell
 php artisan vendor:publish --tag=apis-generator-config
 ```
 In `apis_generator.php` configuration file you can determine the properties of the default values and some behaviors.
 
-#### 4 - Copy the package assets to your local resource views with the publish command:
+##### 4 - Copy the package assets to your local resource views with the publish command:
 ```shell
 php artisan vendor:publish --tag=apis-generator-asset
 ```
 
 Basic usage
 -----------
-#### 1 - Load your routes
+##### 1 - Load your routes
 As we said a little while ago we save your process result in `resource/views/ApiGenerator/credential.josn` 
 this file contains an array that in turn contains an objects each one contains route , url , api title , and type for your api .
 
@@ -65,11 +65,11 @@ to run this route we have to add this facade class in your `routes/api.php` file
 \KMLaravel\ApiGenerator\Facade\KMRoutesFacade::getRoutes();
 ```
 now all your routes load automatically from routes in `credential.json` file.
-#### 2 - create your api
+##### 2 - create your api
 
 you should navigate to `{{ your base url }}/apis-generator/create`.
 
-#### 3 - view all api you have made
+##### 3 - view all api you have made
 you can navigate to `{{ your base url }}/apis-generator/index`.
 
 config options
