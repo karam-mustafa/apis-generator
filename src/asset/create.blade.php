@@ -22,7 +22,10 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>title</label>
-                                            <input type="text" name="title" class="form-control">
+                                            <input type="text" name="title" class="api_title form-control">
+                                            <div class="error_message_area">
+                                                <p class="text-danger api_title_error_message"></p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-4">
@@ -30,14 +33,19 @@
                                         <label>column in database</label>
                                         <div class="column_input_area w-100">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control column_name" placeholder="column name">
+                                                <label>
+                                                    <input type="text" class="form-control column_name"
+                                                           placeholder="column name">
+                                                </label>
                                             </div>
                                             <div class="form-group w-50">
-                                                <select class="form-control column_type">
-                                                    @foreach(config('apis_generator.column_type') as $item)
-                                                        <option value="{{$item}}">{{$item}}</option>
-                                                    @endforeach
-                                                </select>
+                                                <label>
+                                                    <select class="form-control column_type">
+                                                        @foreach(config('apis_generator.column_type') as $item)
+                                                            <option value="{{$item}}">{{$item}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </label>
                                             </div>
                                             <div class="form-group">
                                                 <div class="add_new_column hvr-shutter-in-vertical process_icon">+</div>
@@ -47,7 +55,7 @@
                                 </div>
                             </div>
                             <div class="error_message_area">
-                                <p class="text-danger error_message"></p>
+                                <p class="text-danger column_error_message"></p>
                             </div>
                         </div>
                     </div>

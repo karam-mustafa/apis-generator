@@ -24,14 +24,14 @@
                     <li class="nav-item   hvr-bounce-to-top">
                         <a class="nav-link active" href="{{route("apisGenerator.create")}}">Create New</a>
                     </li>
-                    <li class="nav-item   hvr-bounce-to-top">
+                    <li class="nav-item">
                         <h4>KM-LARAVEL</h4>
                     </li>
                     <li class="nav-item   hvr-bounce-to-top">
                         <a class="nav-link active" href="{{route("apisGenerator.create")}}">Usage</a>
                     </li>
                     <li class="nav-item   hvr-bounce-to-top">
-                        <a class="nav-link active" href="{{route("apisGenerator.create")}}">Docs</a>
+                        <a class="nav-link active" href="https://github.com/kmlaravel/apis-generator">Docs</a>
                     </li>
                 </ul>
             </div>
@@ -46,9 +46,9 @@
                     </ul>
                 </div>
             @endif
-            @if (session('message'))
-                <div class="alert alert-{{session('alert_type')}}">
-                    {{session('message')}}
+            @if (isset($session_success))
+                <div class="alert alert-success">
+                    {{$session_success}}
                 </div>
             @endif
             @yield('content')
