@@ -4,7 +4,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/build.png?b=master)](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-[![Code Grade](https://www.code-inspector.com/project/14583/status/svg)](https://www.code-inspector.com/project/14583/status/svg))
+[![Code Grade](https://www.code-inspector.com/project/14583/status/svg)](https://www.code-inspector.com/project/14583/status/svg)
 # Notes 
 > this document is still being written
 >
