@@ -45,7 +45,7 @@ php artisan vendor:publish --tag=apis-generator-config
 - #### or you may publish asset and config separately.
 ##### 3 - Copy the package config to your local config with the publish command:
 ```shell
-php artisan vendor:publish --tag=apis-generator-config
+php artisan vendor:publish --provider="KMLaravel\ApiGenerator\Providers\ApisGeneratorServiceProviders"
 ```
 In `apis_generator.php` configuration file you can determine the properties of the default values and some behaviors.
 
