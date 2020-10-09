@@ -9,6 +9,7 @@ use KMLaravel\ApiGenerator\BuildClasses\KMControllerBuilder;
 use KMLaravel\ApiGenerator\BuildClasses\KMModelAndMigrationBuilder;
 use KMLaravel\ApiGenerator\BuildClasses\KMRequestBuilder;
 use KMLaravel\ApiGenerator\Facade\KMFileFacade;
+use KMLaravel\ApiGenerator\Helpers\KMFile;
 
 class GeneratorService
 {
@@ -97,7 +98,7 @@ class GeneratorService
     }
 
     /**
-     * @return \KMLaravel\ApiGenerator\Helpers\KMFile
+     * @return KMFile
      * this function is use separate class its work like a services to auto build model and check from
      * migration options and finally push the path for model to paths property to use it when we create
      * controller as final step.
@@ -120,7 +121,7 @@ class GeneratorService
     {
         if (!$this->baseControllerExists) {
             file_put_contents(KMFileFacade::baseControllerPath(),
-                File::get(KMFileFacade::/** @scrutinizer ignore-call */getFilesFromStubs(/** @scrutinizer ignore-call */"BaseController"))
+                File::get(KMFileFacade::getFilesFromStubs("BaseController"))
             );
         }
     }
@@ -139,7 +140,7 @@ class GeneratorService
     }
 
     /**
-     * @return \KMLaravel\ApiGenerator\Helpers\KMFile
+     * @return KMFile
      * this function is used KMRequestBuilder separate class its work like a services to auto build request and
      * put the rule which actor is selected and finally push the path for model to paths property to use it when
      * we create controller as final step.
@@ -188,7 +189,7 @@ class GeneratorService
     }
 
     /**
-     * @return \KMLaravel\ApiGenerator\Helpers\KMFile
+     * @return KMFile
      * in this function we can register some information about our process result
      * like controller name , url ( will be api title as default ) , and title for this api.
      * *******************************
@@ -203,6 +204,7 @@ class GeneratorService
             "url" => "$this->apiTitle",
             "name" => "$this->apiTitle",
             "type" => "resource",
+            "date" => date('l jS \of F Y h:i:s A'),
         ];
         return KMFileFacade::setDataToCredentialJsonFile($data);
     }

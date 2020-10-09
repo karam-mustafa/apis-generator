@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use {{ model_path }};
 use {{ request_path }};
 use {{ resource_path }};
-
+use Exception;
+use Illuminate\Http\Response;
 
 class {{ controller_class }} extends BaseController
 {
@@ -14,6 +15,7 @@ class {{ controller_class }} extends BaseController
      * Display a listing of the resource.
      *
      * @return Response
+     * @throws Exception
      */
     public function index()
     {
@@ -26,6 +28,7 @@ class {{ controller_class }} extends BaseController
      *
      * @param  {{ request_class }} $request
      * @return Response
+     * @throws Exception
      */
     public function store({{ request_class }} $request)
     {
@@ -37,8 +40,9 @@ class {{ controller_class }} extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
+     * @throws \Exception
      */
     public function show($id)
     {
@@ -51,7 +55,8 @@ class {{ controller_class }} extends BaseController
      *
      * @param  {{ request_class }}  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @throws Exception
+     * @return Response
      */
     public function update({{ request_class }} $request, $id)
     {
@@ -62,7 +67,8 @@ class {{ controller_class }} extends BaseController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
+     * @throws Exception
      */
     public function destroy($id)
     {

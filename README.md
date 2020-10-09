@@ -66,37 +66,51 @@ you can navigate to `{{ your base url }}/apis-generator/index`.
 
 config options
 ----------------
-> #### add middleware to package route
+> ## add middleware to package route
 >
-- the initial package route middleware is `web`
-if you want to add extra middleware to `{{ your base url }}/apis-generator/create` for example
-you shod add middleware key to middleware array.
+the initial package route middleware is `web`
+if you want to add any custom middleware you can do that by add middleware keys in middleware arrays
 ```php
-    // example
-    // in apis_generator
+    /*
+    |--------------------------------------------------------------------------
+    | package routes middleware
+    |--------------------------------------------------------------------------
+    |
+    | this middleware array if you want to add custom middleware to package route,
+    | this is applies to ( /apis-generator/index ) and ( /apis-generator/create ).
+    |
+    */
+    //example
     "middleware" => [
-        "admin"
+        'admin',
     ],
 ```
-> #### choose database columns
+> ## add more database column types
 >
-- we already take columns type from [Laravel Migrations](https://laravel.com/docs/6.x/migrations),
-so if you want to add extra columns type for database , you should add it to `column_type` array.
+you can do that by add the type label to column_type array 
 
-> #### request authorize function
->
-- when we build request file [laravel request validation](https://laravel.com/docs/6.x/validation#form-request-validation)
-we will replace `return false` in your request with the value in `request_auth' key in config file.
-
-> #### inputs label 
->
-you can modify options input checkbox label from `basic_build_options` and `advanced_build_options` keys in config file.
-
+```php
+    /*
+    |--------------------------------------------------------------------------
+    | types of column in database which laravel provider.
+    |--------------------------------------------------------------------------
+    |
+    | the options in database column select in create view,
+    | you can added or optimize this columns .
+    |
+    */
+    "column_type" => [
+        'text',
+        'string',
+        ...
+    ],
+```
 What next :
 -----------
 - add seeder options with factory.
 - add api actions which include edit and delete this api.
 - add more migrations options to build columns.
+- implement extra options in api_generator config file.
 
 Changelog
 ---------

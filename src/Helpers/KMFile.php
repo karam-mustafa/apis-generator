@@ -110,9 +110,7 @@ class KMFile
     public static function setDataToCredentialJsonFile($newData)
     {
         $data = self::getCredentialJsonFileAsJson();
-
-        array_push($data, $newData);
-
+        array_unshift($data, $newData);
         File::put(self::getCredentialJsonFilePath(), json_encode($data));
     }
 
