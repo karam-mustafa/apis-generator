@@ -109,12 +109,6 @@ you can do that by add the type label to column_type array
         ...
     ],
 ```
-What next :
------------
-- add seeder options with factory.
-- add api actions which include edit and delete this api.
-- add more migrations options to build columns.
-- implement extra options in api_generator config file.
 
 Changelog
 ---------
