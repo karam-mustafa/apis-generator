@@ -24,7 +24,7 @@ body {
 }
 
 .navbar_body {
-    width: 600px;
+    width: max-content;
     height: 100%;
     margin: auto;
     background-color: var(--bg-gray-bold-color);
@@ -32,7 +32,6 @@ body {
     overflow: hidden;
     border: var(--bordered);
 }
-
 .nav-item:hover .nav-link {
     color: var(--white-color);
 }
@@ -198,4 +197,7 @@ input:focus{
     width: 100%;
     height: 100%;
     z-index: 9999999;
+}
+.darkmode-layer, .darkmode-toggle {
+    z-index: 500;
 }

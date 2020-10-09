@@ -18,17 +18,14 @@
         <nav class="navbar">
             <div class="navbar_body">
                 <ul class="nav h-100 center_elements_space_between w-100">
+                    <li class="nav-item mx-4">
+                        <h4 class="mt-2">KM-LARAVEL</h4>
+                    </li>
                     <li class="nav-item   hvr-bounce-to-top">
-                        <a class="nav-link active" href="{{route("apisGenerator.index")}}">All</a>
+                        <a class="nav-link active" href="{{route("apisGenerator.index")}}">All Apis</a>
                     </li>
                     <li class="nav-item   hvr-bounce-to-top">
                         <a class="nav-link active" href="{{route("apisGenerator.create")}}">Create New</a>
-                    </li>
-                    <li class="nav-item">
-                        <h4>KM-LARAVEL</h4>
-                    </li>
-                    <li class="nav-item   hvr-bounce-to-top">
-                        <a class="nav-link active" href="{{route("apisGenerator.create")}}">Usage</a>
                     </li>
                     <li class="nav-item   hvr-bounce-to-top">
                         <a class="nav-link active" href="https://github.com/kmlaravel/apis-generator">Docs</a>
@@ -61,7 +58,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-<script src="{{asset('ApisGenerator/scripts/script.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+<script src="{{asset('ApisGenerator/scripts/script.js')}}"></script>
 </body>
 </html>

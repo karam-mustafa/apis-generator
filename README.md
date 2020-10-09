@@ -25,7 +25,7 @@ this package auto build :
 
 Features
 --------
-- Friendly simple interface to create your api.
+- Friendly simple interface to create your api with dark mode option using [Darkmode.js](https://github.com/sandoche/Darkmode.js).
 - Giving you the choice to choose what to build.
 - The large development space in the future update and we will  add a lot features.
 
@@ -35,10 +35,10 @@ Installation
 The first step is using composer to install the package and automatically update your composer.json file, you can do this by running:
 
 ```shell
-composer require kmlaravel/api-generator
+composer require kmlaravel/apis-generator
 ```
 - #### Laravel uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
-##### 3 - Copy the package config to your local config with the publish command:
+##### 3 - Copy the package providers to your local config with the publish command , this will publish asset and config :
 ```shell
 php artisan vendor:publish --provider="KMLaravel\ApiGenerator\Providers\ApisGeneratorServiceProviders"
 ```
