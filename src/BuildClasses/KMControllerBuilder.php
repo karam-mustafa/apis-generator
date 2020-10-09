@@ -47,7 +47,7 @@ class KMControllerBuilder extends KMBaseBuilder
     }
 
     /**
-     * @param $columns
+     * @param array $columns
      * @param array $options
      */
     public function controllerReplacer($columns, $options = [])
@@ -61,7 +61,7 @@ class KMControllerBuilder extends KMBaseBuilder
     }
 
     /**
-     * @param $column
+     * @param array $column
      * @param array $options
      * @return mixed
      */
@@ -71,7 +71,7 @@ class KMControllerBuilder extends KMBaseBuilder
         return $this->filepath;
     }
     /**
-     * @param $column
+     * @param array $column
      * @param array $options
      * @return mixed
      * @desc this function run as simply artisan make:controller command if the base controller dose not exits.
@@ -82,7 +82,7 @@ class KMControllerBuilder extends KMBaseBuilder
     }
 
     /**
-     * @param $option
+     * @param array $option
      * @desc
      * Convert options to array to use foreach at all
      * Find intersecting values between paths and actor inputs
