@@ -6,7 +6,7 @@ use KMLaravel\ApiGenerator\Facade\KMFunctionsFacade;
 Route::namespace("KMLaravel\ApiGenerator\Controllers")
     ->group(function () {
         // this is pull middleware information from apis_generator.php config file
-        Route::group(['middleware' => array_merge(['web'], KMFunctionsFacade::getMiddleware())], function () {
+        Route::group(['middleware' => array_merge(['web'], KMFunctionsFacade::getMiddleware() ?? [])], function () {
             Route::group([], function () {
                 // all apis table page
                 Route::get('/apis-generator/index', function () {
