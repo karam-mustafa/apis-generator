@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use KMLaravel\ApiGenerator\BuildClasses\KMControllerBuilder;
 use KMLaravel\ApiGenerator\BuildClasses\KMModelAndMigrationBuilder;
 use KMLaravel\ApiGenerator\BuildClasses\KMRequestBuilder;
+use KMLaravel\ApiGenerator\BuildClasses\KMResourcesBuilder;
 use KMLaravel\ApiGenerator\Facade\KMFileFacade;
 use KMLaravel\ApiGenerator\Helpers\KMFile;
 
@@ -51,7 +52,7 @@ class GeneratorService
      */
     public function initialRequest($request): GeneratorService
     {
-        [$this->request , $this->column , $this->apiTitle ] = [$request , $request->column , $request->title];
+        [$this->request , $this->column , $this->apiTitle ] = [$request , $request->column , str_replace('\\' , '/' ,$request->title)];
         // append all basic options that actor want to run migration  to new array
         foreach ($this->request->basic_options as $item => $status) {
             $this->basicBuildOption [] = $item;
@@ -170,10 +171,10 @@ class GeneratorService
     {
         $builder = new KMControllerBuilder();
         $controllerClass = "$this->apiTitle" . "Controller";
-        $controllerBuildType = !$this->baseControllerExists ? "basicBuild" : "build";
+        $controllerBuildType = !$this->baseControllerExists || $this->paths == null ? "basicBuild" : "build";
         return $builder->initialResource($controllerClass, "controllerReplacer")
             ->callArtisan()
-            ->$controllerBuildType($this->column, array_merge($this->paths, [
+            ->$controllerBuildType($this->column, array_merge($this->paths ?? [], [
                 "{{ controller_path }}" => KMFileFacade::getClassNameSpace("Controller", $controllerClass),
             ]));
     }
@@ -184,7 +185,9 @@ class GeneratorService
      */
     protected function buildResource()
     {
-        Artisan::call("make:resource " . "$this->apiTitle" . "Resource");
+        $builder = new KMResourcesBuilder();
+        $resourceClass = "$this->apiTitle" . "Resource";
+        $builder->callArtisan($resourceClass);
         return $this->paths["{{ resource_path }}"] = KMFileFacade::getClassNameSpace("Resources", "$this->apiTitle" . "Resource");
     }
 
