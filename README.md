@@ -69,10 +69,12 @@ now all your routes load automatically from routes in `credential.json` file.
 ##### 2 - create your api
 
 you should navigate to `{{ your base url }}/apis-generator/create`.
+
 ![create_page](assets/create.png)
 
 ##### 3 - view all api you have made
 you can navigate to `{{ your base url }}/apis-generator/index`.
+
 ![index_page](assets/index.png)
 
 config options
