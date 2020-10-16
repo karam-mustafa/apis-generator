@@ -1,5 +1,4 @@
 ## Apis Generator
-[![Latest Stable Version](https://poser.pugx.org/kmlaravel/apis-generator/v)](//packagist.org/packages/kmlaravel/apis-generator) 
 [![License](https://poser.pugx.org/kmlaravel/apis-generator/license)](//packagist.org/packages/kmlaravel/apis-generator)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/build.png?b=master)](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/build-status/master)
