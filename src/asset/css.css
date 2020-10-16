@@ -32,6 +32,7 @@ body {
     overflow: hidden;
     border: var(--bordered);
 }
+
 .nav-item:hover .nav-link {
     color: var(--white-color);
 }
@@ -141,7 +142,14 @@ input:focus{
     display: flex;
     flex-wrap: wrap;
 }
-
+.delete_api_card_sm{
+    width: 20px;
+    height: 20px;
+    font-size: 15px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
 .validation_item_area {
     position: relative;
 }

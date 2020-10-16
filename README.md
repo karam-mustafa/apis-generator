@@ -6,9 +6,10 @@
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 [![Code Quality](https://www.code-inspector.com/project/14583/score/svg)](https://www.code-inspector.com/project/14583/score/svg)
 # Notes 
-> this document is still being written
+> ### this document is still being written
+> ### laravel 8 not supported yet !
 >
-api generator was developed for [laravel 5.8+](http://laravel.com/) to accelerate your
+apis generator was developed for [laravel 5.8+](http://laravel.com/) to accelerate your
 work by building for you new api just a few clicks .
 
 this package came with base controller which helps to handle some logic and generate response, and we will develop all functions that help developers to reduced development time,
@@ -17,10 +18,10 @@ and simple interface to manage api creations and view all api you had made befor
 What this package build ?
 -------------------------
 this package auto build :
-- Model : with fillable.
+- Model : with fill fillable proerties based to what you insert.
 - Request : with validations rules.
-- Controller : with full crud based on base controller.
-- Resource : to get resources data.
+- Controller : with full crud process based on base controller.
+- Resource : to get resources data from model.
 - Migration : with auto generate for your database columns.
 
 Features
@@ -68,9 +69,11 @@ now all your routes load automatically from routes in `credential.json` file.
 ##### 2 - create your api
 
 you should navigate to `{{ your base url }}/apis-generator/create`.
+![create_page](assets/create.png)
 
 ##### 3 - view all api you have made
 you can navigate to `{{ your base url }}/apis-generator/index`.
+![index_page](assets/index.png)
 
 config options
 ----------------

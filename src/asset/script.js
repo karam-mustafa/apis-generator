@@ -28,7 +28,7 @@ $(document).ready(() => {
                             <input type="hidden" value="${column_name}" class="column_name" name="column[${column_name}][type][${column_type}]">
                             <h6 class="card-subtitle mb-2">Type: &nbsp; <b>${column_type}</b></h6>
                             <div class="form-group">
-                                <div class=" text-secondary process_icon delete_api_card">X</div>
+                                <div class=" text-secondary process_icon delete_api_card_sm ">X</div>
                              </div>
                         </div>
                          <div class="center_elements_space_between w-100">
