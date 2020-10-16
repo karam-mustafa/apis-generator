@@ -203,7 +203,7 @@ class GeneratorService
     {
         $data = [
             "title" => $this->apiTitle,
-            "route" => "$this->apiTitle" . "Controller",
+            "controller" => "$this->apiTitle" . "Controller",
             "url" => "$this->apiTitle",
             "name" => "$this->apiTitle",
             "type" => "resource",
