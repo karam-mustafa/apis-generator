@@ -58,7 +58,7 @@ Basic usage
 -----------
 ##### 1 - Load your routes
 As we said a little while ago we save your process result in `resource/views/ApiGenerator/credential.josn` 
-this file contains an array that in turn contains an objects each one contains route , url , api title , and type for your api .
+this file contains an array that in turn contains an objects each one contains controller class name , url , api title , and type for your api .
 
 to run this route we have to add this facade class in your `routes/api.php` file.
 ```php 
