@@ -8,7 +8,7 @@
 # Notes 
 > ### laravel 8 not supported yet !
 >
-apis generator was developed for [laravel 5.8+](http://laravel.com/) to accelerate your
+apis generator was developed for [laravel 6+](http://laravel.com/) to accelerate your
 work by building for you new api just a few clicks .
 
 this package came with base controller which helps to handle some logic and generate response,
