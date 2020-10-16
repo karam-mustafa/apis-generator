@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 
 class KMFile
 {
+
     /**
      * @param $fileName
      * @return string
@@ -41,7 +42,7 @@ class KMFile
      */
     public static function getResourceFile($fileName)
     {
-        return app_path("Http/Resources/$fileName");
+        return app_path("Http/Resources/".static::correctPath($fileName));
     }
 
     /**
@@ -50,7 +51,7 @@ class KMFile
      */
     public static function getModelFile($fileName)
     {
-        return app_path("$fileName");
+        return app_path(static::correctPath($fileName));
     }
 
     /**
@@ -59,7 +60,7 @@ class KMFile
      */
     public static function getRequestFileAsStream($fileName)
     {
-        return File::get(app_path("Http/Requests/$fileName"));
+        return File::get(app_path("Http/Requests/".static::correctPath($fileName)));
     }
 
     /**
@@ -68,7 +69,7 @@ class KMFile
      */
     public static function getModelFileAsStream($fileName)
     {
-        return File::get(app_path($fileName));
+        return File::get(app_path(static::correctPath($fileName)));
     }
 
     /**
@@ -128,5 +129,13 @@ class KMFile
     public static function baseControllerPath()
     {
         return app_path("Http/Controllers/BaseController.php");
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private static function correctPath($path){
+        return str_replace('\\' , ' /' , $path);
     }
 }
