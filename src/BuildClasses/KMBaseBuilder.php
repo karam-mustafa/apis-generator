@@ -3,6 +3,7 @@
 
 namespace KMLaravel\ApiGenerator\BuildClasses;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use KMLaravel\ApiGenerator\Facade\KMFunctionsFacade;
 use KMLaravel\ApiGenerator\Helpers\KMFile;
@@ -45,6 +46,16 @@ class KMBaseBuilder
         return $this;
     }
 
+    /**
+     * @param string $option
+     * @return KMBaseBuilder
+     */
+    public function callArtisan($option = ''): KMBaseBuilder
+    {
+        $command = strtolower($this->typeToMake);
+        Artisan::call("make:$command $this->fileName $option");
+        return $this;
+    }
 
     /**
      * @param array $options
@@ -60,7 +71,6 @@ class KMBaseBuilder
             $file = $this->helperFileToGet[$this->functionToBuild][0];
             $fileAsStream = $this->helperFileToGet[$this->functionToBuild][1];
         }
-
         // get this fil according whatever function we use from KMFileFacade facade
         $this->filepath = KMFile::$file("$this->fileName.php");
         // get this fil according whatever function we use from KMFileFacade facade as stream to read it and doing replacement process
@@ -91,8 +101,13 @@ class KMBaseBuilder
             $validation = [];
         }
         return $this->replacement(
-            ["{{ rules }}", "{{ request_class }}" , "{{ request_auth }}"]
-            , [$validationRow, $this->fileName , KMFunctionsFacade::getRequestAuthAccessibility()],
+            ["{{ request_namespace }}" , "{{ rules }}", "{{ request_class }}", "{{ request_auth }}"],
+            [
+                $this->checkIfFileInSubFolder("App\Http\Requests" , $this->fileName),
+                $validationRow,
+                $this->array_last_value(explode('/', $this->fileName)),
+                KMFunctionsFacade::getRequestAuthAccessibility()
+            ],
             $this->fileToCreate, $this->filepath);
     }
 
@@ -181,6 +196,15 @@ class KMBaseBuilder
     }
 
     /**
+     * @param array $array
+     * @return mixed
+     */
+    protected function array_last_value($array = [])
+    {
+        return $array[array_key_last($array)];
+    }
+
+    /**
      * @param array | mixed $classNameSpace
      * @return mixed
      */
@@ -189,5 +213,26 @@ class KMBaseBuilder
         $fullNameSpaceClass = explode('\\', $classNameSpace);
         $lastWord = array_key_last(explode('\\', $classNameSpace));
         return $this->array_first_value(explode('\\', $fullNameSpaceClass[$lastWord]));
+    }
+
+    /**
+     * @param $initPath
+     * @param $fileName
+     * @return string
+     */
+    protected function checkIfFileInSubFolder($initPath , $fileName){
+        $fileNameAsArray = explode('/' , $fileName);
+        if (sizeof($fileNameAsArray) > 1)  return $this->ImplodeNameSpace($initPath , $fileNameAsArray);
+        return $initPath;
+    }
+
+    /**
+     * @param $initPath
+     * @param $fileNameAsArray
+     * @return string
+     */
+    protected function ImplodeNameSpace($initPath , $fileNameAsArray){
+        array_pop($fileNameAsArray);
+        return "$initPath\\".implode('\\' , $fileNameAsArray);
     }
 }
