@@ -4,7 +4,6 @@
 namespace KMLaravel\ApiGenerator\BuildClasses;
 
 
-use Illuminate\Support\Facades\Artisan;
 use KMLaravel\ApiGenerator\Facade\KMFileFacade;
 
 class KMControllerBuilder extends KMBaseBuilder
@@ -17,6 +16,7 @@ class KMControllerBuilder extends KMBaseBuilder
      * @var array
      */
     protected $paths = [
+        "{{ controller_namespace }}" => [],
         "{{ model_path }}" => [],
         "{{ resource_path }}" => [],
         "{{ request_path }}" => [],
@@ -33,18 +33,8 @@ class KMControllerBuilder extends KMBaseBuilder
         "{{ resource_path }}" => "{{ resource_class }}",
         "{{ request_path }}" => "{{ request_class }}",
         "{{ controller_path }}" => "{{ controller_class }}",
+        "{{ controller_namespace }}" => "{{ controller_namespace }}",
     ];
-
-    /**
-     * @param string $option
-     * @return KMControllerBuilder
-     */
-    public function callArtisan($option = ''): KMControllerBuilder
-    {
-        $command = strtolower($this->typeToMake);
-        Artisan::call("make:$command $this->fileName $option");
-        return $this;
-    }
 
     /**
      * @param array $columns
@@ -92,9 +82,12 @@ class KMControllerBuilder extends KMBaseBuilder
     protected function classReplacer($option)
     {
         if (!gettype($option) == 'array') $option = [$option];
-        $this->paths = array_intersect_key($this->paths, $option);
+        $controllerNameSpace = $this->checkIfFileInSubFolder("App\Http\Controllers" , $this->fileName);
+        $option['{{ controller_namespace }}'] = $controllerNameSpace;
         foreach ($option as $path => $classNameSpace) {
             $className = $this->getCLassName($classNameSpace);
+            $classNameSpace = str_replace('/' , '\\' , $classNameSpace);
+            $className = $this->array_last_value(explode('/' , $className));
             $this->paths[$path] = [
                 $classNameSpace => $className,
             ];
@@ -119,9 +112,9 @@ class KMControllerBuilder extends KMBaseBuilder
         // set default value for file , and at next loop we will override this value for build this controller
         $newFile = $file;
         foreach ($this->paths as $itemToReplace => $values) {
-            $nameSpace = array_key_first($values);
+            $nameSpace = array_key_first($values) ?? "{{ chose_your_name_space_here }}";
             $classType = $this->classes[$itemToReplace];
-            $class = $values[$nameSpace];
+            $class = $values[$nameSpace] ?? "{{ chose_your_class_here }}";
             $fileReplaced = str_replace([$itemToReplace, $classType], [$nameSpace, $class], $newFile);
             $newFile = $fileReplaced;
         }
