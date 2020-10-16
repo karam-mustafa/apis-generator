@@ -14,6 +14,7 @@ class KMRoutes
             if (isset($extraRoutes)){
                 foreach ($extraRoutes as $api) {
                     if (isset($api->route) && isset($api->url)) {
+                        $api->route = str_replace('/' , '\\' , $api->route);
                         Route::apiResource($api->url, $api->route);
                     }
                 }
