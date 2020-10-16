@@ -1,9 +1,11 @@
 <?php
 
 namespace KMLaravel\ApiGenerator\Providers;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use KMLaravel\ApiGenerator\Helpers\KMFile;
 use KMLaravel\ApiGenerator\Helpers\KMFunctions;
+use KMLaravel\ApiGenerator\Helpers\KMGeneratorCommand;
 use KMLaravel\ApiGenerator\Helpers\KMRoutes;
 
 class ApisGeneratorServiceProviders extends ServiceProvider
@@ -40,6 +42,9 @@ class ApisGeneratorServiceProviders extends ServiceProvider
         });
         $this->app->singleton("KMFunctionsFacade" , function ($app){
             return new KMFunctions();
+        });
+        $this->app->singleton("KMGeneratorCommandFacade" , function ($app){
+            return new KMGeneratorCommand();
         });
     }
 
