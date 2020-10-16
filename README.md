@@ -11,14 +11,15 @@
 apis generator was developed for [laravel 5.8+](http://laravel.com/) to accelerate your
 work by building for you new api just a few clicks .
 
-this package came with base controller which helps to handle some logic and generate response, and we will develop all functions that help developers to reduced development time,
-and simple interface to manage api creations and view all api you had made before based on credential json file. 
+this package came with base controller which helps to handle some logic and generate response,
+we will develop all functions that help developers to reduced development time,
+simple interface to manage api creations process and view all api you had made before based on credential json file. 
 
 What this package build ?
 -------------------------
 this package auto build :
-- Model : with fill fillable proerties based to what you insert.
-- Request : with validations rules.
+- Model : with fill fillable properties depending on the values you chose.
+- Request : with validations rules and handle validation error message.
 - Controller : with full crud process based on base controller.
 - Resource : to get resources data from model.
 - Migration : with auto generate for your database columns.
@@ -27,7 +28,7 @@ Features
 --------
 - Friendly simple interface to create your api with dark mode option using [Darkmode.js](https://github.com/sandoche/Darkmode.js).
 - Giving you the choice to choose what to build.
-- The large development space in the future update and we will  add a lot features.
+- The large development space in the future update.
 
 Installation
 ------------
@@ -78,7 +79,7 @@ you can navigate to `{{ your base url }}/apis-generator/index`.
 
 config options
 ----------------
-> ## add middleware to package route
+> ## add middleware to package routes
 >
 the initial package route middleware is `web`
 if you want to add any custom middleware you can do that by add middleware keys in middleware arrays
