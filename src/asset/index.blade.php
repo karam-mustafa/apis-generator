@@ -15,7 +15,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Api</th>
                         <th scope="col">Url</th>
-                        <th scope="col">Route controller</th>
+                        <th scope="col">Controller</th>
                         <th scope="col">type</th>
                         <th scope="col">date</th>
                     </tr>
@@ -26,7 +26,7 @@
                             <td>{{$index + 1 ?? null}}</td>
                             <td>{{$item->title ?? null}}</td>
                             <td>/api/{{$item->url ?? null}}</td>
-                            <td>{{$item->route ?? null}}</td>
+                            <td>{{$item->controller ?? null}}</td>
                             <td>{{$item->type ?? null}}</td>
                             <td>{{$item->date ?? null}}</td>
                         </tr>
