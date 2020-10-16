@@ -6,7 +6,6 @@
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/kmlaravel/apis-generator/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 [![Code Quality](https://www.code-inspector.com/project/14583/score/svg)](https://www.code-inspector.com/project/14583/score/svg)
 # Notes 
-> ### this document is still being written
 > ### laravel 8 not supported yet !
 >
 apis generator was developed for [laravel 5.8+](http://laravel.com/) to accelerate your
