@@ -5,6 +5,7 @@ namespace KMLaravel\ApiGenerator\BuildClasses;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use KMLaravel\ApiGenerator\Facade\KMFunctionsFacade;
 use KMLaravel\ApiGenerator\Helpers\KMFile;
 
@@ -123,10 +124,12 @@ class KMBaseBuilder
         // model area
         $fillable = [];
         $protectedFillable = "";
-        $databaseColumn = '$table->id();' . "\n";
-        // we build here fillabel for model and column for migration file at once.
+        // this step to support laravel 5.8
+        $migrationId = app()->version() > 6 ? '$table->id();' : '$table->bigIncrements(\'id\');';
+        $databaseColumn = $migrationId."\n";
+        // we build here fillable for model and column for migration file at once.
         foreach ($columns as $name => $item) {
-            // build fillabe property in model.
+            // build fillable property in model.
             array_push($fillable, "'$name'");
             // get column type.
             $type = array_key_first($item['type']);
@@ -147,7 +150,7 @@ class KMBaseBuilder
             // open and read this migration file.
             $fileMigrationPathAsStream = File::get($fileMigrationPath);
             // now put columns inside file.
-            return $this->replacement('$table->id();', $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
+            return $this->replacement($migrationId, $databaseColumn, $fileMigrationPathAsStream, $fileMigrationPath);
         }
     }
 
