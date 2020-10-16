@@ -5,7 +5,6 @@ namespace KMLaravel\ApiGenerator\BuildClasses;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use KMLaravel\ApiGenerator\Facade\KMFunctionsFacade;
 use KMLaravel\ApiGenerator\Helpers\KMFile;
 
